@@ -4,23 +4,28 @@ import './Header.scss'
 
 export const Header = () => (
   <nav className='pt-navbar pt-dark'>
-    <div className='pt-navbar-group pt-align-left'>
-      <div className='pt-navbar-heading'>Youtube Comment Scraper</div>
+    <div className='container'>
+      <div className='pt-navbar-group pt-align-left'>
+        <IndexLink to='/'>
+          <div className='pt-navbar-heading'>Youtube Comment Scraper</div>
+        </IndexLink>
+      </div>
+      <div className='pt-navbar-group pt-align-right'>
+        <IndexLink activeClassName='active-route' to='/'>
+          <button className='pt-button pt-active pt-minimal pt-icon-home'>Home</button>
+        </IndexLink>
+        <Link activeClassName='active-route' to='/stats'>
+          <button className='pt-button pt-minimal pt-icon-timeline-bar-chart'>Stats</button>
+        </Link>
+        <Link activeClassName='active-route' to='/testimonials'>
+          <button className='pt-button pt-minimal pt-icon-comment'>Testimonials</button>
+        </Link>
+        <a href='https://github.com/philbot9/youtube-comment-scraper-2.0' target='_blank'>
+          <button className='pt-button pt-minimal pt-icon-code'>Code</button>
+        </a>
+      </div>
     </div>
   </nav>
 )
-
-// export const Header = () => (
-//   <div>
-//     <h1>React Redux Starter Kit</h1>
-//     <IndexLink to='/' activeClassName='route--active'>
-//       Home
-//     </IndexLink>
-//     {' · '}
-//     <Link to='/counter' activeClassName='route--active'>
-//       Counter
-//     </Link>
-//   </div>
-// )
 
 export default Header

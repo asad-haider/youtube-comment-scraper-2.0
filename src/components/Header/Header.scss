@@ -1,4 +1,24 @@
-.route--active {
-  font-weight: bold;
-  text-decoration: underline;
+.core-layout .pt-navbar.pt-dark {
+  background: #1f3340;
+}
+
+.pt-navbar.pt-dark a {
+  color: #f5f8ef;
+}
+
+.pt-navbar.pt-dark a:hover {
+  color: #f5f8ef;
+}
+
+.pt-navbar.pt-dark a:selection {
+  background: #f5f8ef;
+}
+
+.pt-navbar-group .pt-button {
+  margin: 0 0.2em;
+}
+
+.pt-navbar.pt-dark .active-route > .pt-button.pt-minimal {
+  background: rgba(138, 155, 168, 0.3);
+  color: #f5f8fa;
 }
