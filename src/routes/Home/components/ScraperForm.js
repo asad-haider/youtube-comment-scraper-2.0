@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { Popover, Position, Intent } from '@blueprintjs/core'
+import React, { Component, PropTypes } from 'react'
+import { Popover, Position } from '@blueprintjs/core'
+import { browserHistory } from 'react-router'
 import './ScraperForm.scss'
 
 class ScraperForm extends Component {
@@ -23,7 +24,7 @@ class ScraperForm extends Component {
     if (!videoId) {
       this.setState({ hasError: true })
     } else {
-      console.log('SUBMITTING!')
+      browserHistory.push(`/scraper/${videoId}`)
     }
   }
 
@@ -40,17 +41,18 @@ class ScraperForm extends Component {
   }
 
   extractVideoID (url) {
+    let videoId
     const m1 = /(?:http[s]?:\/\/)?(?:www\.)?youtube\.\w{2,3}\/watch\?.*?v=([^&]+)&?/i.exec(url)
-    if (m1 && m1.length === 2 && m1[1].length === 11) {
-      return m1[1]
+    if (m1 && m1.length === 2) {
+      videoId = m1[1]
     }
 
     const m2 = /(?:http[s]?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)\??/i.exec(url)
-    if (m2 && m2.length === 2 && m2[1].length === 11) {
-      return m2[1]
+    if (!videoId && m2 && m2.length === 2) {
+      videoId = m2[1]
     }
 
-    return null
+    return videoId && /^[\w_-]{11}$/.test(videoId) ? videoId : null
   }
 
   render () {
@@ -91,7 +93,7 @@ class ScraperForm extends Component {
   renderErrorPopover () {
     return (
       <div className='form-popover-content'>
-          <strong>Please enter a valid Youtube Video URL.</strong>
+        <strong>Please enter a valid Youtube Video URL.</strong>
       </div>
     )
   }
