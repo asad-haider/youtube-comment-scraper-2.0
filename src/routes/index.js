@@ -2,6 +2,10 @@
 import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
 import CounterRoute from './Counter'
+import ScraperRoute from './Scraper'
+import StatsRoute from './Stats'
+import TestimonialsRoute from './Testimonials'
+import ErrorReportRoute from './ErrorReport'
 import PageNotFound from './PageNotFound'
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -13,6 +17,10 @@ export const createRoutes = (store) => ({
   indexRoute  : Home,
   childRoutes : [
     CounterRoute(store),
+    ScraperRoute(store),
+    StatsRoute(store),
+    TestimonialsRoute(),
+    ErrorReportRoute(),
     PageNotFound()
   ]
 })

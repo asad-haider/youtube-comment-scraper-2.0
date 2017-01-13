@@ -2,6 +2,14 @@
   background: #1f3340;
 }
 
+.navbar-heading-link {
+  text-decoration: none;
+}
+
+.navbar-heading-link:focus, .navbar-heading-link:hover {
+  text-decoration: none;
+}
+
 .pt-navbar .pt-navbar-heading {
   font-size: 15pt;
 }
@@ -12,10 +20,6 @@
 
 .pt-navbar.pt-dark a:hover {
   color: #f5f8ef;
-}
-
-.pt-navbar.pt-dark a:selection {
-  background: #f5f8ef;
 }
 
 .pt-navbar-group .pt-button {
