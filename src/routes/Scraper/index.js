@@ -1,3 +1,5 @@
+import { injectReducer } from '../../store/reducers'
+
 export default (store) => ({
   path : 'scraper/(:videoId)',
   /*  Async getComponent is only invoked when route matches   */
@@ -8,11 +10,14 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const ScraperContainer = require('./containers/ScraperContainer').default
+      const reducer = require('./redux').default
+
+      injectReducer(store, { key: 'scraper', reducer })
 
       /*  Return getComponent   */
       cb(null, ScraperContainer)
 
     /* Webpack named bundle   */
-    }, 'Scraper')
+    }, 'scraper')
   }
 })

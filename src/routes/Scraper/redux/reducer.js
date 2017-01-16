@@ -1,0 +1,34 @@
+import * as types from './action-types'
+import prop from 'propper'
+import { Map, List } from 'immutable'
+
+const initialState = Map({
+  socket: null,
+  videoId: null,
+  videoUrl: null,
+  videoTitle: null,
+  totalComments: null,
+  comments: List()
+})
+
+export default function scraperReducer (state = initialState, action) {
+  switch (action.type) {
+    case types.INIT_SOCKET:
+      return state.set('socket', Map(action.payload))
+
+    case types.CLOSE_SOCKET:
+      return state.set('socket', null)
+
+    case types.SCRAPE:
+      return state.set('videoId', prop(action, 'payload.videoId'))
+
+    case types.SCRAPE_ERROR:
+      return state.set('error', prop(action, 'payload.error'))
+
+    case types.COMMENT_RECEIVED:
+      return state.update('comments', cs => cs.push(prop(action, 'payload.comment')))
+
+    default:
+      return state
+  }
+}

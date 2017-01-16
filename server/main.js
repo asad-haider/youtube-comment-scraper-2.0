@@ -1,15 +1,48 @@
 const express = require('express')
 const debug = require('debug')('app:server')
 const path = require('path')
+const http = require('http')
+const socketIo = require('socket.io')
 const webpack = require('webpack')
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
 const compress = require('compression')
 
+const buildCommentStream = require('../../rx-youtube-comments')
+
 const app = express()
+const server = http.Server(app)
 
 // Apply gzip compression
 app.use(compress())
+
+// Prepare Comment Streaming websocket
+
+const io = socketIo(server)
+
+io.on('connection', socket => {
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+
+  socket.on('SCRAPE', (videoId, ack) => {
+    console.log(`[SCRAPE] ${videoId}`)
+    ack(videoId)
+
+    if (!/^[\w_-]{11}$/.test(videoId)) {
+      socket.send('SCRAPER_ERROR', 'Invalid video ID.')
+      socket.close()
+      return
+    }
+
+    console.log('building comment stream')
+    buildCommentStream(videoId)
+      .subscribe(c => {
+        console.log('sending comment', c.id)
+        socket.emit('COMMENT', c)
+      })
+  })
+})
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
@@ -66,4 +99,4 @@ if (project.env === 'development') {
   app.use(express.static(project.paths.dist()))
 }
 
-module.exports = app
+module.exports = server
