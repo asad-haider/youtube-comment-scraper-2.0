@@ -45,7 +45,7 @@ class Scraper extends Component {
       <div className='container content-container'>
         <h1>Comments</h1>
         {comments.map(c =>
-          <p><strong>{c.author}</strong> {c.text}</p>
+          <div><strong>{c.author}</strong> {c.text}</div>
         )}
       </div>
     )

@@ -8,6 +8,7 @@ const initialState = Map({
   videoUrl: null,
   videoTitle: null,
   totalComments: null,
+  complete: false,
   comments: List()
 })
 
@@ -21,6 +22,9 @@ export default function scraperReducer (state = initialState, action) {
 
     case types.SCRAPE:
       return state.set('videoId', prop(action, 'payload.videoId'))
+
+    case types.SCRAPE_COMPLETE:
+      return state.set('complete', true)
 
     case types.SCRAPE_ERROR:
       return state.set('error', prop(action, 'payload.error'))

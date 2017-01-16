@@ -6,8 +6,9 @@ export const init = () => {
   return (dispatch) => {
     const socket = initWebsocket()
 
-    socket.on('SCRAPER_ERROR', e => dispatch(scraperError(e)))
+    socket.on('SCRAPE_ERROR', e => dispatch(scrapeError(e)))
     socket.on('COMMENT', c => dispatch(commentReceived(c)))
+    socket.on('SCRAPE_COMPLETE', () => dispatch(scrapeComplete()))
 
     dispatch({
       type: types.INIT_SOCKET,
@@ -48,7 +49,7 @@ export const scrape = videoId =>
   (dispatch, getState) => {
     const emit = getSocketMethod(getState(), 'emit')
     if (!emit) {
-      return dispatch(scraperError('The scraper could not be initialized.'))
+      return dispatch(scrapeError('The scraper could not be initialized.'))
     }
 
     emit(types.SCRAPE, videoId, () => {
@@ -61,7 +62,11 @@ export const scrapeStarted = videoId => ({
   payload: { videoId }
 })
 
-export const scraperError = error => ({
-  type: types.SCRAPER_ERROR,
+export const scrapeComplete = () => ({
+  type: types.SCRAPE_COMPLETE
+})
+
+export const scrapeError = error => ({
+  type: types.SCRAPE_ERROR,
   payload: { error }
 })

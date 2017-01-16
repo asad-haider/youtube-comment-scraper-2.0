@@ -1,5 +1,6 @@
 export const INIT_SOCKET = 'INIT_SOCKET'
 export const SOCKET_CLOSED = 'SOCKET_CLOSED'
 export const SCRAPE = 'SCRAPE'
-export const SCRAPER_ERROR = 'SCRAPER_ERROR'
+export const SCRAPE_COMPLETE = 'SCRAPE_COMPLETE'
+export const SCRAPE_ERROR = 'SCRAPE_ERROR'
 export const COMMENT_RECEIVED = 'COMMENT_RECEIVED'

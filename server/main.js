@@ -30,16 +30,20 @@ io.on('connection', socket => {
     ack(videoId)
 
     if (!/^[\w_-]{11}$/.test(videoId)) {
-      socket.send('SCRAPER_ERROR', 'Invalid video ID.')
+      socket.emit('SCRAPE_ERROR', 'Invalid video ID.')
       socket.close()
       return
     }
 
     console.log('building comment stream')
     buildCommentStream(videoId)
-      .subscribe(c => {
-        console.log('sending comment', c.id)
-        socket.emit('COMMENT', c)
+      .subscribe({
+        next: c => {
+          console.log('sending comment', c.id)
+          socket.emit('COMMENT', c)
+        },
+        error: e => socket.emit('SCRAPE_ERROR', e),
+        complete: e => socket.emit('SCRAPE_COMPLETE')
       })
   })
 })
