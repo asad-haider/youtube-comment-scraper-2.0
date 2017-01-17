@@ -15,7 +15,8 @@ class Scraper extends Component {
     super(props)
     this.state = {
       error: null,
-      saved: false
+      saved: false,
+      removeRouteLeaveHook: () => {}
     }
 
     this.confirmUnload = this.confirmUnload.bind(this)
@@ -33,12 +34,15 @@ class Scraper extends Component {
       })
     }
 
-    router.setRouteLeaveHook(route, this.confirmUnload)
     window.addEventListener('beforeunload', this.confirmUnload)
+    this.setState({
+      removeRouteLeaveHook: router.setRouteLeaveHook(route, this.confirmUnload)
+    })
   }
 
   componentWillUnmount () {
     this.props.resetScraper()
+    this.state.removeRouteLeaveHook()
     window.removeEventListener('beforeunload', this.confirmUnload)
   }
 
@@ -69,7 +73,7 @@ class Scraper extends Component {
       <div className='container content-container'>
         <h1>Comments</h1>
         {comments.map(c =>
-          <div><strong>{c.author}</strong> {c.text}</div>
+          <div><strong>{c.get('author')}</strong> {c.get('text')}</div>
         )}
       </div>
     )

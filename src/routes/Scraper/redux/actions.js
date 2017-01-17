@@ -8,7 +8,11 @@ export function init () {
 
     socket.on('SCRAPER_ERROR', e => dispatch(scraperError(e)))
     socket.on('COMMENT', c => dispatch(commentReceived(c)))
-    socket.on('SCRAPER_COMPLETE', () => dispatch(scraperComplete()))
+    socket.on('VIDEO_INFO', v => dispatch(videoInfoReceived(v)))
+    socket.on('SCRAPER_COMPLETE', () => {
+      console.log('COMPLETE!!!')
+      dispatch(scraperComplete())
+    })
 
     dispatch(socketInit(socket))
   }
@@ -58,6 +62,7 @@ function scrapeStarted (videoId) {
 
 
 export function scraperComplete () {
+  console.log('SCRAPER COMPLETE!')
   return {
     type: types.SCRAPER_COMPLETE
   }
@@ -93,6 +98,13 @@ export function commentReceived (comment) {
   }
 }
 
+
+export function videoInfoReceived (videoInfo) {
+  return {
+    type: types.VIDEO_INFO_RECEIVED,
+    payload: { videoInfo }
+  }
+}
 
 function getSocketMethod (state, method) {
   const { scraper } = state

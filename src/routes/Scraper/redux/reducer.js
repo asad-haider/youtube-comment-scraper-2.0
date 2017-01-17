@@ -4,13 +4,13 @@ import { Map, List } from 'immutable'
 
 const initialState = Map({
   socket: null,
-  videoId: null,
-  videoUrl: null,
-  videoTitle: null,
-  totalComments: null,
+  videoInfo: null,
   complete: false,
   comments: List()
 })
+
+const mapFromProp = (object, path) =>
+  Map(prop(object, path))
 
 export default function scraperReducer (state = initialState, action) {
   switch (action.type) {
@@ -33,7 +33,10 @@ export default function scraperReducer (state = initialState, action) {
         return initialState
 
     case types.COMMENT_RECEIVED:
-      return state.update('comments', cs => cs.push(prop(action, 'payload.comment')))
+      return state.update('comments', cs => cs.push(mapFromProp(action, 'payload.comment')))
+
+    case types.VIDEO_INFO_RECEIVED:
+      return state.set('videoInfo', mapFromProp(action, 'payload.videoInfo'))
 
     default:
       return state

@@ -8,6 +8,7 @@ const webpack = require('webpack')
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
 const compress = require('compression')
+const fetchVideoInfo = require('youtube-info')
 
 const buildCommentStream = require('../../rx-youtube-comments')
 
@@ -29,21 +30,29 @@ io.on('connection', socket => {
       observer.complete()
     }))
 
-  const scrapeRequest$ = Observable.create(observer =>
+  const scrapeRequest$ = Observable.create(observer => {
     socket.on('SCRAPE', (videoId, ack) => {
-      observer.next(videoId)
       ack(videoId)
-    }))
+      observer.next(videoId)
+      observer.complete()
+    })
+  })
 
   scrapeRequest$
-    .concatMap(videoId => buildCommentStream(videoId))
+    .do(vid => console.log('SCRAPE', vid))
+    .mergeMap(videoId => Observable.fromPromise(fetchVideoInfo(videoId)))
+    .do(videoInfo => socket.emit('VIDEO_INFO', videoInfo))
+    .concatMap(({ videoId }) => buildCommentStream(videoId))
     .takeUntil(disconnect$)
     .subscribe({
       next: c => socket.emit('COMMENT', c),
-      error: e => socket.emit('SCRAPER_ERROR', e),
+      error: e => {
+        socket.emit('SCRAPER_ERROR', e)
+        console.error('error', e)
+      },
       complete: () => {
-        console.log('SCRAPER_COMPLETE')
         socket.emit('SCRAPER_COMPLETE')
+        console.log('SCRAPER_COMPLETE')
       }
     })
 })
