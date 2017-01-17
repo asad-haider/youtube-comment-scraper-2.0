@@ -3,6 +3,7 @@ const debug = require('debug')('app:server')
 const path = require('path')
 const http = require('http')
 const socketIo = require('socket.io')
+const { Observable } = require('rxjs')
 const webpack = require('webpack')
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
@@ -20,32 +21,31 @@ app.use(compress())
 
 const io = socketIo(server)
 
+// TODO: add persistent logs
 io.on('connection', socket => {
-  socket.on('disconnect', () => {
-    console.log('user disconnected')
-  })
+  const disconnect$ = Observable.create(observer =>
+    socket.on('disconnect', () => {
+      observer.next('disconnected')
+      observer.complete()
+    }))
 
-  socket.on('SCRAPE', (videoId, ack) => {
-    console.log(`[SCRAPE] ${videoId}`)
-    ack(videoId)
+  const scrapeRequest$ = Observable.create(observer =>
+    socket.on('SCRAPE', (videoId, ack) => {
+      observer.next(videoId)
+      ack(videoId)
+    }))
 
-    if (!/^[\w_-]{11}$/.test(videoId)) {
-      socket.emit('SCRAPE_ERROR', 'Invalid video ID.')
-      socket.close()
-      return
-    }
-
-    console.log('building comment stream')
-    buildCommentStream(videoId)
-      .subscribe({
-        next: c => {
-          console.log('sending comment', c.id)
-          socket.emit('COMMENT', c)
-        },
-        error: e => socket.emit('SCRAPE_ERROR', e),
-        complete: e => socket.emit('SCRAPE_COMPLETE')
-      })
-  })
+  scrapeRequest$
+    .concatMap(videoId => buildCommentStream(videoId))
+    .takeUntil(disconnect$)
+    .subscribe({
+      next: c => socket.emit('COMMENT', c),
+      error: e => socket.emit('SCRAPER_ERROR', e),
+      complete: () => {
+        console.log('SCRAPER_COMPLETE')
+        socket.emit('SCRAPER_COMPLETE')
+      }
+    })
 })
 
 // ------------------------------------

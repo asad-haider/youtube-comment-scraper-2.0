@@ -17,17 +17,20 @@ export default function scraperReducer (state = initialState, action) {
     case types.INIT_SOCKET:
       return state.set('socket', Map(action.payload))
 
-    case types.CLOSE_SOCKET:
+    case types.SOCKET_CLOSED:
       return state.set('socket', null)
 
     case types.SCRAPE:
       return state.set('videoId', prop(action, 'payload.videoId'))
 
-    case types.SCRAPE_COMPLETE:
+    case types.SCRAPER_COMPLETE:
       return state.set('complete', true)
 
-    case types.SCRAPE_ERROR:
+    case types.SCRAPER_ERROR:
       return state.set('error', prop(action, 'payload.error'))
+
+    case types.SCRAPER_RESET:
+        return initialState
 
     case types.COMMENT_RECEIVED:
       return state.update('comments', cs => cs.push(prop(action, 'payload.comment')))

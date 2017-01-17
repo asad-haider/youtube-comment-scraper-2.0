@@ -2,51 +2,41 @@ import * as types from './action-types'
 
 import initWebsocket from './websocket'
 
-export const init = () => {
+export function init () {
   return (dispatch) => {
     const socket = initWebsocket()
 
-    socket.on('SCRAPE_ERROR', e => dispatch(scrapeError(e)))
+    socket.on('SCRAPER_ERROR', e => dispatch(scraperError(e)))
     socket.on('COMMENT', c => dispatch(commentReceived(c)))
-    socket.on('SCRAPE_COMPLETE', () => dispatch(scrapeComplete()))
+    socket.on('SCRAPER_COMPLETE', () => dispatch(scraperComplete()))
 
-    dispatch({
-      type: types.INIT_SOCKET,
-      payload: socket
-    })
+    dispatch(socketInit(socket))
   }
 }
 
-const getSocketMethod = (state, method) => {
-  const { scraper } = state
-  return scraper.getIn(['socket', method])
-}
-
-function commentReceived (comment) {
+export function socketInit (socket) {
   return {
-    type: types.COMMENT_RECEIVED,
-    payload: { comment }
+    type: types.INIT_SOCKET,
+    payload: socket
   }
 }
 
-export const close = () => {
+export function closeSocket () {
   return (dispatch, getState) => {
-    const closeSocket = getSocketMethod(getState(), 'close')
-    if (closeSocket) {
-      closeSocket()
-    } else {
-      console.error('Socket has not been initialized. No need to close it.')
-    }
+    closeSocketInState(getState())
     dispatch(socketClosed())
   }
 }
 
-export const socketClosed = () => ({
-  type: types.SOCKET_CLOSED
-})
+function socketClosed () {
+  return {
+    type: types.SOCKET_CLOSED
+  }
+}
 
-export const scrape = videoId =>
-  (dispatch, getState) => {
+
+export function scrape (videoId) {
+  return (dispatch, getState) => {
     const emit = getSocketMethod(getState(), 'emit')
     if (!emit) {
       return dispatch(scrapeError('The scraper could not be initialized.'))
@@ -56,17 +46,62 @@ export const scrape = videoId =>
       dispatch(scrapeStarted(videoId))
     })
   }
+}
 
-export const scrapeStarted = videoId => ({
-  type: types.SCRAPE,
-  payload: { videoId }
-})
 
-export const scrapeComplete = () => ({
-  type: types.SCRAPE_COMPLETE
-})
+function scrapeStarted (videoId) {
+  return {
+    type: types.SCRAPE,
+    payload: { videoId }
+  }
+}
 
-export const scrapeError = error => ({
-  type: types.SCRAPE_ERROR,
-  payload: { error }
-})
+
+export function scraperComplete () {
+  return {
+    type: types.SCRAPER_COMPLETE
+  }
+}
+
+
+export function scraperError (error) {
+  return {
+    type: types.SCRAPER_ERROR,
+    payload: { error }
+  }
+}
+
+
+export function resetScraper () {
+  return (dispatch, getState) => {
+    closeSocketInState(getState())
+    dispatch(scraperReset())
+  }
+}
+
+function scraperReset () {
+  return {
+    type: types.SCRAPER_RESET
+  }
+}
+
+
+export function commentReceived (comment) {
+  return {
+    type: types.COMMENT_RECEIVED,
+    payload: { comment }
+  }
+}
+
+
+function getSocketMethod (state, method) {
+  const { scraper } = state
+  return scraper.getIn(['socket', method])
+}
+
+function closeSocketInState (state) {
+  const socketClose = getSocketMethod(state, 'close')
+  if (socketClose) {
+    socketClose()
+  }
+}
