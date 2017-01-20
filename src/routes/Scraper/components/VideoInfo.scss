@@ -1,0 +1,60 @@
+.video-info {
+  margin-top: 1em;
+}
+
+.video-thumb-box {
+  padding: 0.3em 0.5em;
+  text-align: center;
+}
+
+.video-thumb-box img {
+  border: 1px solid #ccc;
+}
+
+.video-info-box {
+  margin: 0.3em 1em;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.video-info-box > h4, .video-info > h2 {
+  margin-bottom: 0.3em;
+}
+
+.video-info-box > hr {
+  margin: 0.5em 0;
+}
+
+.video-info-item {
+  margin-top: 0;
+  margin-bottom: 0.2em;
+  color: #222;
+}
+
+.video-info-publish {
+  color: #333;
+  font-size: 10pt;
+}
+
+.video-info-counts {
+  font-size: 10pt;
+  color: #333;
+}
+
+.video-description {
+  margin-top: 0.7em;
+  margin-bottom: 0.3em;
+  max-width: 100%;
+  max-height: 2.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-description.expanded {
+  max-height: none;
+}
+
+.expand-description {
+  text-align: center;
+  font-size: 10pt;
+}

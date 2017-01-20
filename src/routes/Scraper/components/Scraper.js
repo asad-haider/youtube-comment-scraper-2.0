@@ -2,11 +2,15 @@ import React, { Component, PropTypes } from 'react'
 import { IndexLink } from 'react-router'
 import './Scraper.scss'
 
+import ScrapeProgress from './ScrapeProgress'
+import VideoInfo from './VideoInfo'
+import CommentTable from './CommentTable'
+
 class Scraper extends Component {
   displayName: 'Scraper'
   propTypes: {
     videoId: PropTypes.string.isRequired,
-    comments: PropTypes.object.isRequired,
+    scraper: PropTypes.object.isRequired,
     router: PropTypes.obect.isRequired,
     route: PropTypes.string.isRequired
   }
@@ -23,7 +27,7 @@ class Scraper extends Component {
   }
 
   componentDidMount () {
-    const { videoId, route, router } = this.props
+    const { route, router, videoId } = this.props
 
     if (this.validateVideoId(videoId)) {
       this.props.init()
@@ -57,24 +61,23 @@ class Scraper extends Component {
     }
   }
 
-
   validateVideoId (videoId) {
     return /^[\w_-]{11}$/.test(videoId)
   }
 
   render () {
-    const { comments } = this.props
-
-    if (!comments.size) {
-      return <h3>Loading ...</h3>
+    const { comments, videoInfo, complete } = this.props.scraper.toObject()
+    const progress = {
+      totalCommentCount: videoInfo ? videoInfo.get('commentCount') : 0,
+      commentsScraped: comments.size,
+      complete
     }
 
     return (
       <div className='container content-container'>
-        <h1>Comments</h1>
-        {comments.map(c =>
-          <div><strong>{c.get('author')}</strong> {c.get('text')}</div>
-        )}
+        <ScrapeProgress {...progress} />
+        <VideoInfo videoInfo={videoInfo} />
+        <CommentTable comments={comments} />
       </div>
     )
   }

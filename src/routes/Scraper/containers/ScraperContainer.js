@@ -4,7 +4,7 @@ import Scraper from '../components/Scraper'
 
 const mapStateToProps = (state, ownProps) => ({
   videoId: ownProps.params.videoId,
-  comments: state.scraper.get('comments'),
+  scraper: state.scraper,
   router: ownProps.router,
   route: ownProps.route
 })

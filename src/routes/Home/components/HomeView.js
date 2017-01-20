@@ -7,7 +7,7 @@ export const HomeView = () => (
   <div>
     <div className='page-cover'>
       <div className='page-cover-content container'>
-        <h1>Scrape Comments from Youtube Videos</h1>
+        <h1>Scrape Comments from YouTube Videos</h1>
         <hr />
         <ScraperForm />
       </div>
