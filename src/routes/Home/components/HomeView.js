@@ -39,7 +39,7 @@ export const HomeView = () => (
             Not just free as in beer, but free as in Freedom! All of the source
             code is licensed under an open-source license and anyone is free to
             use or modify it. Check out the&nbsp;
-            <a href="https://github.com/philbot9/youtube-comment-scraper" target='_blank'>
+            <a href="https://github.com/philbot9/youtube-comment-scraper-2.0" target='_blank'>
               GitHub repo
             </a>
             &nbsp;to find out more!
