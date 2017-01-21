@@ -1,11 +1,13 @@
 import React from 'react'
-import { IndexLink } from 'react-router'
+import PageLayout from '../../../layouts/PageLayout'
 import './ErrorReport.scss'
 
 export const ErrorReport = () => (
-  <div className='container content-container'>
-    <h2><center>Error Report</center></h2>
-  </div>
+  <PageLayout>
+    <div className='container content-container'>
+      <h2><center>Error Report</center></h2>
+    </div>
+  </PageLayout>
 )
 
 export default ErrorReport

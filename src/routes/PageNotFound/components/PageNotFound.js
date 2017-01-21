@@ -1,14 +1,15 @@
 import React from 'react'
 import { IndexLink } from 'react-router'
+import PageLayout from '../../../layouts/PageLayout'
 import './PageNotFound.scss'
 
 export const PageNotFound = () => (
-  <div className='page-not-found container'>
-    <div className="pt-non-ideal-state">
-      <div className="pt-non-ideal-state-visual pt-non-ideal-state-icon">
-        <span className="pt-icon pt-icon-warning-sign"></span>
+  <PageLayout>
+    <div className='pt-non-ideal-state content-container'>
+      <div className='pt-non-ideal-state-visual pt-non-ideal-state-icon'>
+        <span className='pt-icon pt-icon-warning-sign'></span>
       </div>
-      <h4 className="pt-non-ideal-state-title">Whoops, that page doesn't exist...</h4>
+      <h4 className='pt-non-ideal-state-title'>Whoops, that page doesn't exist...</h4>
       <div className='pt-non-ideal-state-description'>
         <IndexLink to='/'>
           <button className='pt-button pt-button-large'>
@@ -17,7 +18,7 @@ export const PageNotFound = () => (
         </IndexLink>
       </div>
     </div>
-  </div>
+  </PageLayout>
 )
 
 export default PageNotFound

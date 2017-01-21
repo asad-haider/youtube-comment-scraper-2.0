@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router'
+import PageLayout from '../../../layouts/PageLayout'
 import ScraperForm from './ScraperForm'
+
 import './HomeView.scss'
 
 export const HomeView = () => (
-  <div>
+  <PageLayout>
     <div className='page-cover'>
       <div className='page-cover-content container'>
         <h1>Scrape Comments from YouTube Videos</h1>
@@ -57,7 +59,7 @@ export const HomeView = () => (
         </div>
       </div>
     </div>
-  </div>
+  </PageLayout>
 )
 
 export default HomeView

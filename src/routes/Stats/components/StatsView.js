@@ -1,11 +1,13 @@
 import React from 'react'
-import { IndexLink } from 'react-router'
+import PageLayout from '../../../layouts/PageLayout'
 import './StatsView.scss'
 
 export const StatsView = () => (
-  <div className='container content-container'>
-    <h2><center>Stats View</center></h2>
-  </div>
+  <PageLayout>
+    <div className='container content-container'>
+      <h2><center>Stats View</center></h2>
+    </div>
+  </PageLayout>
 )
 
 export default StatsView
