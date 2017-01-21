@@ -12,7 +12,7 @@ class ScraperHeader extends Component {
   defaultProps: {}
 
   render () {
-    const { videoInfo } = this.props
+    const { videoInfo, progress } = this.props
     const loading = !videoInfo
 
     return (

@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import { IndexLink } from 'react-router'
 import './Scraper.scss'
 
 import ScraperHeader from './ScraperHeader'
+import ScrapeProgress from './ScrapeProgress'
 import CommentTable from './CommentTable'
 
 class Scraper extends Component {
@@ -19,10 +19,12 @@ class Scraper extends Component {
     this.state = {
       error: null,
       saved: false,
-      removeRouteLeaveHook: () => {}
+      removeRouteLeaveHook: () => {},
+      progressDismissed: false
     }
 
     this.confirmUnload = this.confirmUnload.bind(this)
+    this.dismissProgress = this.dismissProgress.bind(this)
   }
 
   componentDidMount () {
@@ -50,6 +52,30 @@ class Scraper extends Component {
     window.removeEventListener('beforeunload', this.confirmUnload)
   }
 
+  render () {
+    const { comments, videoInfo, complete } = this.props.scraper.toObject()
+    const { progressDismissed } = this.state
+    const progress = {
+      totalCommentCount: videoInfo ? videoInfo.get('commentCount') : 0,
+      commentsScraped: comments.size,
+      complete
+    }
+
+    return (
+      <div className='scraper-container'>
+        <ScraperHeader videoInfo={videoInfo} />
+        {!progressDismissed && <ScrapeProgress {...progress} dismiss={this.dismissProgress} />}
+        <CommentTable comments={comments} />
+      </div>
+    )
+  }
+
+  dismissProgress () {
+    this.setState({
+      progressDismissed: true
+    })
+  }
+
   confirmUnload (e) {
     if (!this.state.error && !this.state.saved) {
       const msg = 'The current progress of your scrape will be lost. Are you sure you want to leave?'
@@ -63,22 +89,6 @@ class Scraper extends Component {
 
   validateVideoId (videoId) {
     return /^[\w_-]{11}$/.test(videoId)
-  }
-
-  render () {
-    const { comments, videoInfo, complete } = this.props.scraper.toObject()
-    const progress = {
-      totalCommentCount: videoInfo ? videoInfo.get('commentCount') : 0,
-      commentsScraped: comments.size,
-      complete
-    }
-
-    return (
-      <div className='scraper-container'>
-        <ScraperHeader videoInfo={videoInfo} />
-        <CommentTable comments={comments} />
-      </div>
-    )
   }
 }
 

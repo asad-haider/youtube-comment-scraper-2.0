@@ -18,7 +18,7 @@ class VideoInfo extends Component {
     this.toggleExpandDescription = this.toggleExpandDescription.bind(this)
 
     this.state = {
-      collapsed: false
+      collapsed: true
     }
   }
 
