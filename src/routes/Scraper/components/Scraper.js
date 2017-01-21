@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { IndexLink } from 'react-router'
 import './Scraper.scss'
 
-import ScrapeProgress from './ScrapeProgress'
-import VideoInfo from './VideoInfo'
+import ScraperHeader from './ScraperHeader'
 import CommentTable from './CommentTable'
 
 class Scraper extends Component {
@@ -30,6 +29,7 @@ class Scraper extends Component {
     const { route, router, videoId } = this.props
 
     if (this.validateVideoId(videoId)) {
+      // console.warn('Halting the scraper for now!')
       this.props.init()
       this.props.scrape(videoId)
     } else {
@@ -74,9 +74,8 @@ class Scraper extends Component {
     }
 
     return (
-      <div className='container content-container'>
-        <ScrapeProgress {...progress} />
-        <VideoInfo videoInfo={videoInfo} />
+      <div className='scraper-container'>
+        <ScraperHeader videoInfo={videoInfo} />
         <CommentTable comments={comments} />
       </div>
     )

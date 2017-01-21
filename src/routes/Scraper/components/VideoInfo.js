@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Flex, Box } from 'reflexbox'
+import { Collapse } from '@blueprintjs/core'
 import moment from 'moment'
 import './VideoInfo.scss'
 
@@ -11,52 +12,89 @@ class VideoInfo extends Component {
 
   constructor (props) {
     super(props)
+    this.renderCollapseButton = this.renderCollapseButton.bind(this)
+    this.toggleCollapse = this.toggleCollapse.bind(this)
     this.renderVideoInfo = this.renderVideoInfo.bind(this)
     this.toggleExpandDescription = this.toggleExpandDescription.bind(this)
 
     this.state = {
-      descriptionExpanded: false
+      collapsed: false
     }
   }
 
   render () {
     const { videoInfo } = this.props
+    const { collapsed } = this.state
 
     return (
-      <div className='pt-card pt-elevation-1 video-info skeleton'>
-        {videoInfo ? this.renderVideoInfo() : this.renderSkeletonContent()}
+      <div className='video-info-container'>
+        <Flex className='video-title-container'>
+          <Box>
+            {this.renderCollapseButton()}
+          </Box>
+          <Box auto>
+            {videoInfo ? this.renderTitle(videoInfo) : this.renderSkeletonTitle()}
+          </Box>
+        </Flex>
+        <Collapse isOpen={!collapsed}>
+          {videoInfo ? this.renderVideoInfo() : this.renderSkeletonContent()}
+        </Collapse>
       </div>
     )
   }
 
+  renderSkeletonTitle () {
+    return (
+      <h4 className='pt-skeleton video-title'>Video title skeleton</h4>
+    )
+  }
+
+  renderTitle (videoInfo) {
+    return (
+      <h4 className='video-title'>
+        <a target='_blank' href={`https://www.youtube.com/watch?v=${videoInfo.get('videoId')}`}>
+          {videoInfo.get('title')}
+        </a>
+      </h4>
+    )
+  }
+
+  renderCollapseButton () {
+    const { collapsed } = this.state
+    const chevronClass = collapsed ? 'pt-icon-chevron-down' : 'pt-icon-chevron-up'
+    return (
+      <button
+        className={`pt-button pt-minimal ${chevronClass}`}
+        onClick={this.toggleCollapse} />
+    )
+  }
+
+  toggleCollapse () {
+    this.setState({
+      collapsed: !this.state.collapsed
+    })
+  }
+
   renderVideoInfo () {
     const { videoInfo } = this.props
-    const { descriptionExpanded } = this.state
+
     return (
-      <Flex justify='flex-start' style={{ width: '100%' }}>
-        <Box className='video-thumb-box'>
-          <a target='_blank' href={`https://www.youtube.com/watch?v=${videoInfo.get('videoId')}`}>
-            <img width='246' height='138' src={videoInfo.get('thumbnailUrl')} />
-          </a>
-        </Box>
+      <Flex className='video-details' justify='flex-start' style={{ width: '100%' }}>
         <Box className='video-info-box' auto>
-          <h4>
-            <a target='_blank' href={`https://www.youtube.com/watch?v=${videoInfo.get('videoId')}`}>
-              {videoInfo.get('title')}
-            </a>
-          </h4>
-          <p className='video-info-item video-info-publish'>
-          Published by&nbsp;
-          {videoInfo.get('channelId')
-            ? <a
-                href={`https://www.youtube.com/channel/${videoInfo.get('channelId')}`}
-                target='_blank'>
-                  {videoInfo.get('owner')}
-                </a>
-            : videoInfo.get('owner')}
-          &nbsp;on {moment(videoInfo.get('datePublished', 'YYYY-MM-DD')).format('MMM Do YYYY')}
+
+          <p className='video-info-item'>
+            Published by&nbsp;
+            {videoInfo.get('channelId')
+              ? <a
+                  href={`https://www.youtube.com/channel/${videoInfo.get('channelId')}`}
+                  target='_blank'>
+                        {videoInfo.get('owner')}
+                  </a>
+              : videoInfo.get('owner')}
+            &nbsp;on {moment(videoInfo.get('datePublished', 'YYYY-MM-DD')).format('MMM Do YYYY')}
           </p>
-          <p className='video-info-item video-info-counts'>
+
+          <p className='video-info-item'>
             <strong>
               {videoInfo.get('views').toLocaleString()}
             </strong>
@@ -66,13 +104,16 @@ class VideoInfo extends Component {
             </strong>
             &nbsp;Comments
           </p>
-          <p
-            className={`video-description ${descriptionExpanded && 'expanded'}`}
-            dangerouslySetInnerHTML={{ __html: videoInfo.get('description') }} />
-          <hr />
-          <div className='expand-description'>
-            <a onClick={this.toggleExpandDescription}>Show {descriptionExpanded ? 'Less' : 'More'}</a>
-          </div>
+
+          <p className='video-description'>
+            <div
+              className='video-description-html'
+              dangerouslySetInnerHTML={{ __html: videoInfo.get('description') }} />
+          </p>
+        </Box>
+
+        <Box className='video-thumb-box'>
+          <img className='video-thumb' src={videoInfo.get('thumbnailUrl')} />
         </Box>
       </Flex>
     )
@@ -80,16 +121,21 @@ class VideoInfo extends Component {
 
   renderSkeletonContent () {
     return (
-      <Flex justify='flex-start' style={{ width: '100%' }}>
+      <Flex className='video-details' justify='flex-start' style={{ width: '100%' }}>
+        <Box className='video-info-box' auto>
+          <p className='video-info-item pt-skeleton'>Lorem ipsum dolor sit amet</p>
+          <p className='video-info-item pt-skeleton'>Lorem ipsum dolor sit amet</p>
+          <p className='video-description pt-skeleton'>
+            Lorem ipsum dolor sit amet<br/>
+            Lorem ipsum dolor sit amet<br/>
+            Lorem ipsum dolor sit amet<br/>
+            Lorem ipsum dolor sit amet<br/>
+          </p>
+        </Box>
         <Box className='video-thumb-box'>
-          <div className='pt-skeleton' style={{ width: '246px', height: '138px', margin: '0 auto' }} />
+          <div className='video-thumb pt-skeleton' />
         </Box>
-        <Box className='video-info-box' px={2} auto>
-          <h2 className='pt-skeleton'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
-          <p className='pt-skeleton'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <p className='pt-skeleton'>Lorem ipsum dolor sit amet</p>
-          <p className='pt-skeleton'>Lorem ipsum dolor sit amet</p>
-        </Box>
+
       </Flex>
     )
   }
