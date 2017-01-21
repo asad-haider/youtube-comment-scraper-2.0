@@ -4,6 +4,7 @@ import './Scraper.scss'
 
 import ScraperHeader from './ScraperHeader'
 import ScrapeProgress from './ScrapeProgress'
+import ScraperToolbar from './ScraperToolbar'
 import CommentTable from './CommentTable'
 
 class Scraper extends Component {
@@ -56,6 +57,7 @@ class Scraper extends Component {
   render () {
     const { comments, videoInfo, complete } = this.props.scraper.toObject()
     const { progressDismissed } = this.state
+    const loading = Boolean(videoInfo)
     const progress = {
       totalCommentCount: videoInfo ? videoInfo.get('commentCount') : 0,
       commentsScraped: comments.size,
@@ -68,11 +70,14 @@ class Scraper extends Component {
           <ScraperHeader videoInfo={videoInfo} />
         </Box>
         {!progressDismissed &&
-          <Box className='scrape-progress-container'>
+          <Box className='ui-component scrape-progress-container'>
             <ScrapeProgress {...progress} dismiss={this.dismissProgress} />
           </Box>
         }
-        <Box className='comment-table-container' auto>
+        <Box className='ui-component scraper-toolbar-container'>
+          <ScraperToolbar loading={loading} />
+        </Box>
+        <Box className='ui-component comment-table-container' auto>
           <CommentTable comments={comments} />
         </Box>
       </Flex>
