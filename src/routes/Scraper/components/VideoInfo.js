@@ -18,7 +18,7 @@ class VideoInfo extends Component {
     this.toggleExpandDescription = this.toggleExpandDescription.bind(this)
 
     this.state = {
-      collapsed: true
+      collapsed: false
     }
   }
 
@@ -27,7 +27,7 @@ class VideoInfo extends Component {
     const { collapsed } = this.state
 
     return (
-      <div className='video-info-container'>
+      <div className='video-info'>
         <Flex className='video-title-container'>
           <Box>
             {this.renderCollapseButton()}

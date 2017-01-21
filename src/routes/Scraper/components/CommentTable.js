@@ -28,8 +28,8 @@ class CommentTable extends Component {
     const numRows = comments.size > 25 ? comments.size : 25
 
     return (
-      <div className='comment-table-container'>
-        <Table className='comment-table' numRows={numRows}>
+      <div className='comment-table-component'>
+        <Table className='' numRows={numRows}>
           <Column name='id' renderCell={comments.size ? this.renderCell : this.renderLoadingCell} />
           <Column name='author' renderCell={comments.size ? this.renderCell : this.renderLoadingCell} />
           <Column name='text' renderCell={comments.size ? this.renderCell : this.renderLoadingCell} />

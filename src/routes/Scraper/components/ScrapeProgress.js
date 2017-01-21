@@ -34,7 +34,7 @@ class ScrapeProgress extends Component {
       : null
 
     return (
-      <div className='scrape-progress-container'>
+      <div className='scrape-progress'>
         {complete && this.renderDismissButton(dismiss)}
         <div className='scrape-progress-box container'>
           <div className='progress-text'>

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Flex, Box } from 'reflexbox'
 import './Scraper.scss'
 
 import ScraperHeader from './ScraperHeader'
@@ -62,11 +63,19 @@ class Scraper extends Component {
     }
 
     return (
-      <div className='scraper-container'>
-        <ScraperHeader videoInfo={videoInfo} />
-        {!progressDismissed && <ScrapeProgress {...progress} dismiss={this.dismissProgress} />}
-        <CommentTable comments={comments} />
-      </div>
+      <Flex column className='scraper-component'>
+        <Box className='scraper-header-container'>
+          <ScraperHeader videoInfo={videoInfo} />
+        </Box>
+        {!progressDismissed &&
+          <Box className='scrape-progress-container'>
+            <ScrapeProgress {...progress} dismiss={this.dismissProgress} />
+          </Box>
+        }
+        <Box className='comment-table-container' auto>
+          <CommentTable comments={comments} />
+        </Box>
+      </Flex>
     )
   }
 

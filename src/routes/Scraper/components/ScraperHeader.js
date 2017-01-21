@@ -12,8 +12,7 @@ class ScraperHeader extends Component {
   defaultProps: {}
 
   render () {
-    const { videoInfo, progress } = this.props
-    const loading = !videoInfo
+    const { videoInfo } = this.props
 
     return (
       <Flex className='scraper-header' align='stretch'>
