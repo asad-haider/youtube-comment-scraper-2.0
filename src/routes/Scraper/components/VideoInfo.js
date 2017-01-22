@@ -80,6 +80,10 @@ class VideoInfo extends Component {
 
     return (
       <Flex className='video-details' justify='flex-start' style={{ width: '100%' }}>
+        <Box className='video-thumb-box'>
+          <img className='video-thumb' src={videoInfo.get('thumbnailUrl')} />
+        </Box>
+
         <Box className='video-info-box' auto>
 
           <p className='video-info-item'>
@@ -111,10 +115,6 @@ class VideoInfo extends Component {
               dangerouslySetInnerHTML={{ __html: videoInfo.get('description') }} />
           </p>
         </Box>
-
-        <Box className='video-thumb-box'>
-          <img className='video-thumb' src={videoInfo.get('thumbnailUrl')} />
-        </Box>
       </Flex>
     )
   }
@@ -122,6 +122,10 @@ class VideoInfo extends Component {
   renderSkeletonContent () {
     return (
       <Flex className='video-details' justify='flex-start' style={{ width: '100%' }}>
+        <Box className='video-thumb-box'>
+          <div className='video-thumb pt-skeleton' />
+        </Box>
+        
         <Box className='video-info-box' auto>
           <p className='video-info-item pt-skeleton'>Lorem ipsum dolor sit amet</p>
           <p className='video-info-item pt-skeleton'>Lorem ipsum dolor sit amet</p>
@@ -132,10 +136,6 @@ class VideoInfo extends Component {
             Lorem ipsum dolor sit amet<br/>
           </p>
         </Box>
-        <Box className='video-thumb-box'>
-          <div className='video-thumb pt-skeleton' />
-        </Box>
-
       </Flex>
     )
   }

@@ -1,8 +1,67 @@
 import React, { Component, PropTypes } from 'react'
-import { List } from 'immutable'
-import { Table, Column, Cell } from '@blueprintjs/table'
+import DataGrid from 'react-data-grid'
+import Measure from 'react-measure'
+
+// import { Table, Column, Cell } from 'fixed-data-table'
 
 import './CommentTable.scss'
+
+const columns = [
+  {
+    key: 'id',
+    name: 'ID',
+    width: 250,
+    resizable : true
+  },
+  {
+    key: 'author',
+    name: 'Author',
+    width: 150,
+    resizable : true
+  },
+  {
+    key: 'authorLink',
+    name: 'Author Link',
+    width: 150,
+    resizable : true
+  },
+  {
+    key: 'authorThumb',
+    name: 'Author Thumb',
+    width: 150,
+    resizable : true
+  },
+  {
+    key: 'text',
+    name: 'Text',
+    width: 300,
+    resizable : true
+  },
+  {
+    key: 'likes',
+    name: 'Likes',
+    width: 50,
+    resizable : true
+  },
+  {
+    key: 'time',
+    name: 'Time',
+    width: 130,
+    resizable : true
+  },
+  {
+    key: 'timestamp',
+    name: 'Timestamp',
+    width: 120,
+    resizable : true
+  },
+  {
+    key: 'hasReplies',
+    name: 'Has Replies',
+    width: 150,
+    resizable : true
+  },
+]
 
 class CommentTable extends Component {
   displayName: 'CommentTable'
@@ -12,43 +71,36 @@ class CommentTable extends Component {
 
   constructor (props) {
     super(props)
-    this.renderCell = this.renderCell.bind(this)
+
+    this.rowGetter = this.rowGetter.bind(this)
 
     this.state = {
-      columnMapping: {
-        0: 'id',
-        1: 'author',
-        2: 'text'
-      }
+      columnMapping: {}
     }
   }
 
   render () {
     const { comments } = this.props
-    const numRows = comments.size > 25 ? comments.size : 25
+    const { columnWidths } = this.state
 
     return (
-      <div className='comment-table-component'>
-        <Table className='' numRows={numRows}>
-          <Column name='id' renderCell={comments.size ? this.renderCell : this.renderLoadingCell} />
-          <Column name='author' renderCell={comments.size ? this.renderCell : this.renderLoadingCell} />
-          <Column name='text' renderCell={comments.size ? this.renderCell : this.renderLoadingCell} />
-        </Table>
-      </div>
+      <Measure>
+        {({ width, height }) => (
+          <div className='comment-table-component'>
+            <DataGrid
+              columns={columns}
+              minHeight={height}
+              rowHeight={25}
+              rowGetter={this.rowGetter}
+              rowsCount={comments.size} />
+          </div>
+        )}
+      </Measure>
     )
   }
 
-  renderCell (row, col) {
-    const { comments } = this.props
-    const { columnMapping } = this.state
-
-    return (row >= comments.size)
-      ? <Cell />
-      : <Cell>{comments.get(row).get(columnMapping[col])}</Cell>
-  }
-
-  renderLoadingCell () {
-    return <Cell loading='Lorem ipsum dolor'>Lorem ipsum dolor</Cell>
+  rowGetter (i) {
+    return this.props.comments.get(i)
   }
 }
 

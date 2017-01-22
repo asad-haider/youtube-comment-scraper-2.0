@@ -27,7 +27,7 @@ const messages = [
   'Making America... great... again...',
   'Constructing additional pylons...',
   'Roping some seaturtles...',
-  'Try turning it off and on again...',
+  'Tried turning it off and on again...',
   'Walking the dog...',
   'Dividing by zero...',
   'Proving P=NP...',

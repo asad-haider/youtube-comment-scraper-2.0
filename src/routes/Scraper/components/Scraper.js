@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { Flex, Box } from 'reflexbox'
+import { Collapse } from '@blueprintjs/core'
 import './Scraper.scss'
 
 import ScraperHeader from './ScraperHeader'
 import ScrapeProgress from './ScrapeProgress'
 import ScraperToolbar from './ScraperToolbar'
+import DataToolbar from './DataToolbar'
+import FiltersToolbar from './FiltersToolbar'
 import CommentTable from './CommentTable'
 
 class Scraper extends Component {
@@ -22,11 +25,15 @@ class Scraper extends Component {
       error: null,
       saved: false,
       removeRouteLeaveHook: () => {},
-      progressDismissed: false
+      progressDismissed: false,
+      dataOptionsToolbarIsOpen: false,
+      filtersToolbarIsOpen: false
     }
 
     this.confirmUnload = this.confirmUnload.bind(this)
     this.dismissProgress = this.dismissProgress.bind(this)
+    this.toggleDataOptionsToolbar = this.toggleDataOptionsToolbar.bind(this)
+    this.toggleFiltersToolbar = this.toggleFiltersToolbar.bind(this)
   }
 
   componentDidMount () {
@@ -56,7 +63,7 @@ class Scraper extends Component {
 
   render () {
     const { comments, videoInfo, complete } = this.props.scraper.toObject()
-    const { progressDismissed } = this.state
+    const { progressDismissed, dataOptionsToolbarIsOpen, filtersToolbarIsOpen } = this.state
     const loading = Boolean(videoInfo)
     const progress = {
       totalCommentCount: videoInfo ? videoInfo.get('commentCount') : 0,
@@ -69,14 +76,32 @@ class Scraper extends Component {
         <Box className='scraper-header-container'>
           <ScraperHeader videoInfo={videoInfo} />
         </Box>
+
         {!progressDismissed &&
           <Box className='ui-component scrape-progress-container'>
             <ScrapeProgress {...progress} dismiss={this.dismissProgress} />
           </Box>
         }
+
         <Box className='ui-component scraper-toolbar-container'>
-          <ScraperToolbar loading={loading} />
+          <ScraperToolbar
+            loading={loading}
+            dataOptionsToolbar={dataOptionsToolbarIsOpen}
+            filtersToolbar={filtersToolbarIsOpen}
+            toggleDataOptionsToolbar={this.toggleDataOptionsToolbar}
+            toggleFiltersToolbar={this.toggleFiltersToolbar} />
         </Box>
+        <Collapse isOpen={dataOptionsToolbarIsOpen}>
+          <Box className='ui-component comment-table-container'>
+            <DataToolbar loading={loading} />
+          </Box>
+        </Collapse>
+        <Collapse isOpen={filtersToolbarIsOpen}>
+          <Box className='ui-component comment-table-container'>
+            <FiltersToolbar loading={loading} />
+          </Box>
+        </Collapse>
+
         <Box className='ui-component comment-table-container' auto>
           <CommentTable comments={comments} />
         </Box>
@@ -87,6 +112,18 @@ class Scraper extends Component {
   dismissProgress () {
     this.setState({
       progressDismissed: true
+    })
+  }
+
+  toggleDataOptionsToolbar () {
+    this.setState({
+      dataOptionsToolbarIsOpen: !this.state.dataOptionsToolbarIsOpen
+    })
+  }
+
+  toggleFiltersToolbar () {
+    this.setState({
+      filtersToolbarIsOpen: !this.state.filtersToolbarIsOpen
     })
   }
 

@@ -41,7 +41,7 @@ class ScrapeProgress extends Component {
             {
               totalCommentCount > 0 && commentsScraped > 0 && !complete
               ? <span>Scraped <strong>{commentsScraped}</strong> of {totalCommentCount} comments</span>
-              : complete ? <span>Scrape complete!</span> : <span>{this.state.loadingMessage}...</span>
+              : complete ? <span>Scrape complete!</span> : <span>{this.state.loadingMessage}</span>
             }
           </div>
 
