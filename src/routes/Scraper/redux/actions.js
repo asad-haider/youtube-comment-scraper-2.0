@@ -7,7 +7,7 @@ export function init () {
     const socket = initWebsocket()
 
     socket.on('SCRAPER_ERROR', e => dispatch(scraperError(e)))
-    socket.on('COMMENT', c => dispatch(commentReceived(c)))
+    socket.on('COMMENTS', cs => dispatch(commentsReceived(cs)))
     socket.on('VIDEO_INFO', v => dispatch(videoInfoReceived(v)))
     socket.on('SCRAPER_COMPLETE', () => {
       console.log('COMPLETE!!!')
@@ -38,12 +38,11 @@ function socketClosed () {
   }
 }
 
-
 export function scrape (videoId) {
   return (dispatch, getState) => {
     const emit = getSocketMethod(getState(), 'emit')
     if (!emit) {
-      return dispatch(scrapeError('The scraper could not be initialized.'))
+      return dispatch(scraperError('The scraper could not be initialized.'))
     }
 
     emit(types.SCRAPE, videoId, () => {
@@ -52,14 +51,12 @@ export function scrape (videoId) {
   }
 }
 
-
 function scrapeStarted (videoId) {
   return {
     type: types.SCRAPE,
     payload: { videoId }
   }
 }
-
 
 export function scraperComplete () {
   console.log('SCRAPER COMPLETE!')
@@ -68,14 +65,12 @@ export function scraperComplete () {
   }
 }
 
-
 export function scraperError (error) {
   return {
     type: types.SCRAPER_ERROR,
     payload: { error }
   }
 }
-
 
 export function resetScraper () {
   return (dispatch, getState) => {
@@ -90,14 +85,12 @@ function scraperReset () {
   }
 }
 
-
-export function commentReceived (comment) {
+export function commentsReceived (comments) {
   return {
-    type: types.COMMENT_RECEIVED,
-    payload: { comment }
+    type: types.COMMENTS_RECEIVED,
+    payload: { comments }
   }
 }
-
 
 export function videoInfoReceived (videoInfo) {
   return {

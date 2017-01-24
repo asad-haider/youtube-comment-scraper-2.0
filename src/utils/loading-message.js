@@ -24,7 +24,7 @@ const messages = [
   'Spinning the hamster...',
   'Convincing AI not to turn evil..',
   'Computing the secret to life, the universe, and everything...',
-  'Making America... great... again...',
+  'Making America great again...',
   'Constructing additional pylons...',
   'Roping some seaturtles...',
   'Tried turning it off and on again...',
@@ -37,14 +37,11 @@ const messages = [
   'Trying to sort in O(n)...',
   'Reheating coffee...',
   'Winter is coming...',
-  'Installing dependencies...',
   'Switching to the latest JS framework..',
   'Finding someone to hold my beer...',
-  '@todo Insert witty loading message',
   'Ordering 1s and 0s...',
-  'Updating dependencies...',
   'Please wait... Consulting the manual...',
-  'Loading funny message...'
+  'Loading witty message...'
 ]
 
 module.exports = () => messages[Math.floor(Math.random() * messages.length)]

@@ -32,8 +32,8 @@ export default function scraperReducer (state = initialState, action) {
     case types.SCRAPER_RESET:
         return initialState
 
-    case types.COMMENT_RECEIVED:
-      return state.update('comments', cs => cs.push(mapFromProp(action, 'payload.comment')))
+    case types.COMMENTS_RECEIVED:
+      return state.update('comments', cs => cs.concat(List(action.payload.comments.map(Map))))
 
     case types.VIDEO_INFO_RECEIVED:
       return state.set('videoInfo', mapFromProp(action, 'payload.videoInfo'))

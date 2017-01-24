@@ -44,8 +44,9 @@ io.on('connection', socket => {
     .do(videoInfo => socket.emit('VIDEO_INFO', videoInfo))
     .concatMap(({ videoId }) => buildCommentStream(videoId))
     .takeUntil(disconnect$)
+    .bufferCount(20)
     .subscribe({
-      next: c => socket.emit('COMMENT', c),
+      next: cs => socket.emit('COMMENTS', cs),
       error: e => {
         socket.emit('SCRAPER_ERROR', e)
         console.error('error', e)

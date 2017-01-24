@@ -60,7 +60,7 @@ const columns = [
     name: 'Has Replies',
     width: 150,
     resizable : true
-  },
+  }
 ]
 
 class CommentTable extends Component {
@@ -81,7 +81,6 @@ class CommentTable extends Component {
 
   render () {
     const { comments } = this.props
-    const { columnWidths } = this.state
 
     return (
       <Measure>
