@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Intent, ProgressBar } from '@blueprintjs/core'
+import { Flex, Box } from 'reflexbox'
 
 import generateLoadingMessage from '../../../utils/loading-message'
 
@@ -34,23 +35,30 @@ class ScrapeProgress extends Component {
       : null
 
     return (
-      <div className='scrape-progress'>
-        {complete && this.renderDismissButton(dismiss)}
-        <div className='scrape-progress-box container'>
-          <div className='progress-text'>
-            {
-              totalCommentCount > 0 && commentsScraped > 0 && !complete
-              ? <span>Scraped <strong>{commentsScraped}</strong> of {totalCommentCount} comments</span>
-              : complete ? <span>Scrape complete!</span> : <span>{this.state.loadingMessage}</span>
-            }
-          </div>
+      <Flex className='scrape-progress' align='center' justify='space-around'>
+        <Box col={1}>
+          {complete && this.renderDismissButton(dismiss)}
+        </Box>
 
-          <ProgressBar
-            className={complete && 'pt-no-stripes'}
-            intent={complete ? Intent.SUCCESS : Intent.PRIMARY}
-            value={progress} />
-        </div>
-      </div>
+        <Box auto>
+          <div className='scrape-progress-box container'>
+            <ProgressBar
+              className={complete && 'pt-no-stripes'}
+              intent={complete ? Intent.SUCCESS : Intent.PRIMARY}
+              value={progress} />
+
+            <div className='progress-text'>
+              {
+                totalCommentCount > 0 && commentsScraped > 0 && !complete
+                ? <span>Scraped <strong>{commentsScraped}</strong> of {totalCommentCount} comments</span>
+                : complete ? <span>Scrape complete!</span> : <span>{this.state.loadingMessage}</span>
+              }
+            </div>
+          </div>
+        </Box>
+
+        <Box col={1} />
+      </Flex>
     )
   }
 

@@ -1,19 +1,14 @@
-.scrape-progress {
-  position: relative;
-}
-
 .scrape-progress-box {
   padding: 0.5em;
+  padding-top: 0.8em;
 }
 
 .progress-text {
-  height: 2em;
-  padding: 0.2em;
+  padding-top: 0.5em;
   text-align: center;
   font-size: 9pt;
 }
 
 .dismiss-button-container {
-  position: absolute;
-  left: 0.3em;
+  padding-left: 0.5em;
 }
