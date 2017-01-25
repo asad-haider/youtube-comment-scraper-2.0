@@ -52,6 +52,13 @@ export default [
     resizable : true
   },
   {
+    key: 'edited',
+    name: 'Edited',
+    width: 60,
+    resizable: true,
+    formatter: BooleanColumnFormatter
+  },
+  {
     key: 'hasReplies',
     name: 'Has Replies',
     width: 85,
@@ -106,5 +113,12 @@ export default [
     name: 'Reply Timestamp',
     width: 120,
     resizable : true
+  },
+  {
+    key: 'reply_edited',
+    name: 'Edited',
+    width: 60,
+    resizable: true,
+    formatter: BooleanColumnFormatter
   }
 ]
