@@ -5,11 +5,16 @@
   font-size: 10pt;
 }
 
-.comment-table-component .react-grid-HeaderCell {
-  height: 30px;
+.comment-table-component .react-grid-Header {
+  background-color: #efefef;
 }
 
-.comment-table-row {
-  padding: 0;
-  border-bottom: 1px solid #ddd;
+.comment-table-component .react-grid-HeaderCell {
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  background-color: #efefef;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #dddddd;
 }
