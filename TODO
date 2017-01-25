@@ -1,3 +1,5 @@
 Replace Bootstrap with Pure.css or something similar (http://purecss.io/buttons/)
 
 Add sentiment analysis (https://www.npmjs.com/package/sentiment)
+
+Add status bar that shows number of rows and allows to jump to a specific row

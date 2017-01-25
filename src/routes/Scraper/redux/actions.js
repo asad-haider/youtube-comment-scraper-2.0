@@ -1,4 +1,5 @@
 import * as types from './action-types'
+import * as socketMessages from './socket-messages'
 
 import initWebsocket from './websocket'
 
@@ -6,13 +7,10 @@ export function init () {
   return (dispatch) => {
     const socket = initWebsocket()
 
-    socket.on('SCRAPER_ERROR', e => dispatch(scraperError(e)))
-    socket.on('COMMENTS', cs => dispatch(commentsReceived(cs)))
-    socket.on('VIDEO_INFO', v => dispatch(videoInfoReceived(v)))
-    socket.on('SCRAPER_COMPLETE', () => {
-      console.log('COMPLETE!!!')
-      dispatch(scraperComplete())
-    })
+    socket.on(socketMessages.VIDEO_INFO, v => dispatch(videoInfoReceived(v)))
+    socket.on(socketMessages.COMMENTS, cs => dispatch(commentsReceived(cs)))
+    socket.on(socketMessages.SCRAPER_ERROR, e => dispatch(scraperError(e)))
+    socket.on(socketMessages.SCRAPE_COMPLETE, () => dispatch(scraperComplete()))
 
     dispatch(socketInit(socket))
   }
@@ -45,7 +43,9 @@ export function scrape (videoId) {
       return dispatch(scraperError('The scraper could not be initialized.'))
     }
 
-    emit(types.SCRAPE, videoId, () => {
+    console.log(socketMessages)
+
+    emit(socketMessages.SCRAPE, videoId, () => {
       dispatch(scrapeStarted(videoId))
     })
   }

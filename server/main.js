@@ -3,14 +3,13 @@ const debug = require('debug')('app:server')
 const path = require('path')
 const http = require('http')
 const socketIo = require('socket.io')
-const { Observable } = require('rxjs')
 const webpack = require('webpack')
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
 const compress = require('compression')
-const fetchVideoInfo = require('youtube-info')
 
-const buildCommentStream = require('../../rx-youtube-comments')
+const fetchYoutubeComments = require('./fetch-youtube-comments')
+const socketMessages = require('../src/routes/Scraper/redux/socket-messages')
 
 const app = express()
 const server = http.Server(app)
@@ -19,43 +18,25 @@ const server = http.Server(app)
 app.use(compress())
 
 // Prepare Comment Streaming websocket
-
 const io = socketIo(server)
 
 // TODO: add persistent logs
 io.on('connection', socket => {
-  const disconnect$ = Observable.create(observer =>
+  console.log('Client connected')
+
+  socket.on(socketMessages.SCRAPE, (videoId, ack) => {
+    // acknowledge we have received the request
+    // the client relies on this ack!
+    ack(videoId)
+
+    console.log('SCRAPE', videoId)
+
     socket.on('disconnect', () => {
-      observer.next('disconnected')
-      observer.complete()
-    }))
-
-  const scrapeRequest$ = Observable.create(observer => {
-    socket.on('SCRAPE', (videoId, ack) => {
-      ack(videoId)
-      observer.next(videoId)
-      observer.complete()
+      console.log('Client disconnected')
     })
+
+    fetchYoutubeComments(videoId, socket)
   })
-
-  scrapeRequest$
-    .do(vid => console.log('SCRAPE', vid))
-    .mergeMap(videoId => Observable.fromPromise(fetchVideoInfo(videoId)))
-    .do(videoInfo => socket.emit('VIDEO_INFO', videoInfo))
-    .concatMap(({ videoId }) => buildCommentStream(videoId))
-    .takeUntil(disconnect$)
-    .bufferCount(20)
-    .subscribe({
-      next: cs => socket.emit('COMMENTS', cs),
-      error: e => {
-        socket.emit('SCRAPER_ERROR', e)
-        console.error('error', e)
-      },
-      complete: () => {
-        socket.emit('SCRAPER_COMPLETE')
-        console.log('SCRAPER_COMPLETE')
-      }
-    })
 })
 
 // ------------------------------------
