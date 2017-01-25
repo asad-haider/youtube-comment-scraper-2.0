@@ -43,8 +43,6 @@ export function scrape (videoId) {
       return dispatch(scraperError('The scraper could not be initialized.'))
     }
 
-    console.log(socketMessages)
-
     emit(socketMessages.SCRAPE, videoId, () => {
       dispatch(scrapeStarted(videoId))
     })
@@ -59,7 +57,6 @@ function scrapeStarted (videoId) {
 }
 
 export function scraperComplete () {
-  console.log('SCRAPER COMPLETE!')
   return {
     type: types.SCRAPER_COMPLETE
   }

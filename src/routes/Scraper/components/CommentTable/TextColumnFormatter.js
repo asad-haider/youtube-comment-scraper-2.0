@@ -27,11 +27,11 @@ const TextColumnFormatter = ({ value }) => {
 }
 
 TextColumnFormatter.propTypes = {
-  value: PropTypes.bool
+  value: PropTypes.string
 }
 
 TextColumnFormatter.defaultProps = {
-  value: false
+  value: ''
 }
 
 export default TextColumnFormatter

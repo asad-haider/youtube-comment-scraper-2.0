@@ -18,11 +18,11 @@ class ScraperHeader extends Component {
     return (
       <Flex className='scraper-header' align='stretch'>
         <Box className='scraper-header-logo-container'>
-            <Flex column justify='space-around' align='center'>
-              <IndexLink to='/'>
-                <Box><span className='logo pt-icon-comment' /></Box>
-              </IndexLink>
-            </Flex>
+          <Flex column justify='space-around' align='center'>
+            <IndexLink to='/'>
+              <Box><span className='logo pt-icon-comment' /></Box>
+            </IndexLink>
+          </Flex>
         </Box>
         <Box p={1} className='scraper-header-main' auto>
           <VideoInfo videoInfo={videoInfo} />

@@ -3,7 +3,7 @@ const fetchComments = require('youtube-comments-task')
 const pFetchVideoInfo = require('youtube-info')
 const { retry } = require('retry-task')
 
-const socketMessages = require('../src/routes/Scraper/redux/socket-messages')
+const socketMessages = require('../src/routes/Scraper/redux/Scraper/socket-messages')
 
 const fetchVideoInfo = videoId =>
   new Task((rej, res) =>

@@ -10,9 +10,12 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const ScraperContainer = require('./containers/ScraperContainer').default
-      const reducer = require('./redux').default
 
-      injectReducer(store, { key: 'scraper', reducer })
+      const scraperReducer = require('./redux/Scraper').default
+      injectReducer(store, { key: 'scraper', reducer: scraperReducer })
+
+      // const resultEditorReducer = require('./ResultEditor').default
+      // injectReducer(store, { key: 'resultEditor', reducer: resultEditorReducer })
 
       /*  Return getComponent   */
       cb(null, ScraperContainer)

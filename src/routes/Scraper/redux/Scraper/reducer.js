@@ -9,8 +9,8 @@ const initialState = Map({
   comments: List()
 })
 
-const mapFromProp = (object, path) =>
-  Map(prop(object, path))
+const immutableFromProp = (object, path) =>
+  Immutable.fromJS(prop(object, path))
 
 export default function scraperReducer (state = initialState, action) {
   switch (action.type) {
@@ -36,7 +36,7 @@ export default function scraperReducer (state = initialState, action) {
       return state.update('comments', cs => cs.concat(List(Immutable.fromJS(action.payload.comments))))
 
     case types.VIDEO_INFO_RECEIVED:
-      return state.set('videoInfo', mapFromProp(action, 'payload.videoInfo'))
+      return state.set('videoInfo', immutableFromProp(action, 'payload.videoInfo'))
 
     default:
       return state

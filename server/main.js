@@ -9,7 +9,7 @@ const project = require('../config/project.config')
 const compress = require('compression')
 
 const fetchYoutubeComments = require('./fetch-youtube-comments')
-const socketMessages = require('../src/routes/Scraper/redux/socket-messages')
+const socketMessages = require('../src/routes/Scraper/redux/Scraper/socket-messages')
 
 const app = express()
 const server = http.Server(app)
