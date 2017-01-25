@@ -1,6 +1,6 @@
 import * as types from './action-types'
 import prop from 'propper'
-import { Map, List } from 'immutable'
+import Immutable, { Map, List } from 'immutable'
 
 const initialState = Map({
   socket: null,
@@ -30,10 +30,10 @@ export default function scraperReducer (state = initialState, action) {
       return state.set('error', prop(action, 'payload.error'))
 
     case types.SCRAPER_RESET:
-        return initialState
+      return initialState
 
     case types.COMMENTS_RECEIVED:
-      return state.update('comments', cs => cs.concat(List(action.payload.comments.map(Map))))
+      return state.update('comments', cs => cs.concat(List(Immutable.fromJS(action.payload.comments))))
 
     case types.VIDEO_INFO_RECEIVED:
       return state.set('videoInfo', mapFromProp(action, 'payload.videoInfo'))
