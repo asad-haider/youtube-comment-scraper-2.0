@@ -1,4 +1,3 @@
-import React from 'react'
 import BooleanColumnFormatter from './BooleanColumnFormatter'
 import TextColumnFormatter from './TextColumnFormatter'
 

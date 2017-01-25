@@ -14,8 +14,8 @@ export default (store) => ({
       const scraperReducer = require('./redux/Scraper').default
       injectReducer(store, { key: 'scraper', reducer: scraperReducer })
 
-      // const resultEditorReducer = require('./ResultEditor').default
-      // injectReducer(store, { key: 'resultEditor', reducer: resultEditorReducer })
+      const resultEditorReducer = require('./redux/ResultEditor').default
+      injectReducer(store, { key: 'resultEditor', reducer: resultEditorReducer })
 
       /*  Return getComponent   */
       cb(null, ScraperContainer)

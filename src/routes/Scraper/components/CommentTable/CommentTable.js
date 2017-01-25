@@ -3,13 +3,14 @@ import DataGrid from 'react-data-grid'
 import Measure from 'react-measure'
 import { List } from 'immutable'
 
+import defaultColumns from './columns'
 import './CommentTable.scss'
-import columns from './columns'
 
 class CommentTable extends Component {
   displayName: 'CommentTable'
   propTypes: {
-    comments: PropTypes.object
+    comments: PropTypes.object.isRequired,
+    resultEditor: PropTypes.object.isRequired
   }
 
   constructor (props) {
@@ -27,8 +28,7 @@ class CommentTable extends Component {
       return
     }
 
-    const { comments } = nextProps
-    const rows = comments.reduce((cs, c) =>
+    const rows = nextProps.comments.reduce((cs, c) =>
       cs.concat(this.flattenReplies(c)), List())
 
     this.setState({ rows })
@@ -36,6 +36,10 @@ class CommentTable extends Component {
 
   render () {
     const { rows } = this.state
+    const resultEditor = this.props.resultEditor.toObject()
+
+    const columns = defaultColumns
+      .filter(c => resultEditor.columns.get(c.key) && resultEditor.columns.get(c.key).get('active'))
 
     return (
       <Measure>

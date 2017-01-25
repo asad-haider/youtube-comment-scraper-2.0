@@ -15,6 +15,7 @@ class Scraper extends Component {
   propTypes: {
     videoId: PropTypes.string.isRequired,
     scraper: PropTypes.object.isRequired,
+    resultEditor: PropTypes.object.isRequired,
     router: PropTypes.obect.isRequired,
     route: PropTypes.string.isRequired
   }
@@ -62,7 +63,8 @@ class Scraper extends Component {
   }
 
   render () {
-    const { comments, videoInfo, complete } = this.props.scraper.toObject()
+    const { resultEditor, scraper } = this.props
+    const { comments, videoInfo, complete } = scraper.toObject()
     const { progressDismissed, dataOptionsToolbarIsOpen, filtersToolbarIsOpen } = this.state
     const loading = Boolean(videoInfo)
     const progress = {
@@ -93,7 +95,11 @@ class Scraper extends Component {
         </Box>
         <Collapse isOpen={dataOptionsToolbarIsOpen}>
           <Box className='ui-component comment-table-container'>
-            <DataToolbar loading={loading} />
+            <DataToolbar
+              loading={loading}
+              resultEditor={this.props.resultEditor}
+              toggleColumn={this.props.toggleColumn}
+              toggleMultipleColumns={this.props.toggleMultipleColumns} />
           </Box>
         </Collapse>
         <Collapse isOpen={filtersToolbarIsOpen}>
@@ -103,7 +109,7 @@ class Scraper extends Component {
         </Collapse>
 
         <Box className='ui-component comment-table-container' auto>
-          <CommentTable comments={comments} />
+          <CommentTable resultEditor={resultEditor} comments={comments} />
         </Box>
       </Flex>
     )
