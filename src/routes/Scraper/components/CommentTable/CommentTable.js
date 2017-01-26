@@ -40,6 +40,7 @@ class CommentTable extends Component {
       return
     }
 
+    console.time('computing replies')
     let comments
     if (!nextProps.resultEditor.get('includeReplies')) {
       comments = nextProps.comments
@@ -55,6 +56,7 @@ class CommentTable extends Component {
       .map((c, i) => c.set('_index', (i + 1)))
 
     this.setState({ rows })
+    console.timeEnd('computing replies')
   }
 
   render () {

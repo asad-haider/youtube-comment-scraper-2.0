@@ -89,7 +89,7 @@ class DataToolbar extends Component {
           <div className='row'>
             {defaultColumns.filter(c => /^reply_/.test(c.key)).map(c => {
               const active = columns.get(c.key) && columns.get(c.key).get('active')
-              const disabled = !includeReplies || resultEditor.get('collapsedReplies')
+              const disabled = !includeReplies || repliesCollapsed
               return this.renderColumnSwitch(c, active, disabled)
             })}
           </div>
