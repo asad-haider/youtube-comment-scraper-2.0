@@ -32,8 +32,8 @@ class CommentTable extends Component {
   componentWillReceiveProps (nextProps) {
     const needToRecomputeComments = (
       nextProps.comments !== this.props.comments ||
-      nextProps.resultEditor.get('replies') !== this.props.resultEditor.get('replies') ||
-      nextProps.resultEditor.get('collapsedReplies') !== this.props.resultEditor.get('collapsedReplies')
+      nextProps.resultEditor.get('includeReplies') !== this.props.resultEditor.get('includeReplies') ||
+      nextProps.resultEditor.get('repliesCollapsed') !== this.props.resultEditor.get('repliesCollapsed')
     )
 
     if (!needToRecomputeComments) {
@@ -41,9 +41,9 @@ class CommentTable extends Component {
     }
 
     let comments
-    if (!nextProps.resultEditor.get('replies')) {
+    if (!nextProps.resultEditor.get('includeReplies')) {
       comments = nextProps.comments
-    } else if (!nextProps.resultEditor.get('collapsedReplies')) {
+    } else if (!nextProps.resultEditor.get('repliesCollapsed')) {
       comments = nextProps.comments
         .reduce((cs, c) => cs.concat(this.flattenReplies(c)), List())
     } else {

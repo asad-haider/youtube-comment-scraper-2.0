@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Switch, Tabs, TabList, Tab, TabPanel } from '@blueprintjs/core'
+import { Switch, Tooltip, Position, Tabs, TabList, Tab, TabPanel } from '@blueprintjs/core'
 
 import defaultColumns from './CommentTable/columns'
 import './DataToolbar.scss'
@@ -10,14 +10,14 @@ class DataToolbar extends Component {
     resultEditor: PropTypes.object.isRequired,
     loading: PropTypes.boolean,
     toggleColumn: PropTypes.func,
-    toggleReplies: PropTypes.func,
-    toggleCollapsedReplies: PropTypes.func
+    setIncludeReplies: PropTypes.func,
+    setRepliesCollapsed: PropTypes.func
   }
   defaultProps: {
     loading: true,
     toggleColumn: () => {},
-    toggleReplies: () => {},
-    toggleCollapsedReplies: () => {}
+    setIncludeReplies: () => {},
+    setRepliesCollapsed: () => {}
   }
 
   constructor (props) {
@@ -26,8 +26,8 @@ class DataToolbar extends Component {
     this.renderRepliesTab = this.renderRepliesTab.bind(this)
     this.renderColumnSwitch = this.renderColumnSwitch.bind(this)
     this.toggleColumn = this.toggleColumn.bind(this)
-    this.toggleReplies = this.toggleReplies.bind(this)
-    this.toggleCollapsedReplies = this.toggleCollapsedReplies.bind(this)
+    this.setIncludeReplies = this.setIncludeReplies.bind(this)
+    this.setRepliesCollapsed = this.setRepliesCollapsed.bind(this)
   }
 
   render () {
@@ -63,8 +63,8 @@ class DataToolbar extends Component {
   }
 
   renderRepliesTab () {
-    const { loading, resultEditor } = this.props
-    const { columns } = resultEditor.toObject()
+    const { resultEditor } = this.props
+    const { columns, includeReplies, repliesCollapsed } = resultEditor.toObject()
 
     return (
       <TabPanel>
@@ -72,22 +72,24 @@ class DataToolbar extends Component {
           <div className='row'>
             {this.renderSwitch({
               label: 'Include Replies',
-              checked: resultEditor.get('replies'),
-              onChange: this.toggleReplies
+              checked: includeReplies,
+              onChange: this.setIncludeReplies,
+              tooltip: 'Include comment replies.'
             })}
 
             {this.renderSwitch({
-              disabled: !resultEditor.get('replies'),
+              disabled: !includeReplies,
               label: 'Collapse Replies',
-              checked: resultEditor.get('collapsedReplies'),
-              onChange: this.toggleCollapsedReplies
+              checked: repliesCollapsed,
+              onChange: this.setRepliesCollapsed,
+              tooltip: 'Treat replies the same as regular comments.'
             })}
           </div>
           <hr />
           <div className='row'>
             {defaultColumns.filter(c => /^reply_/.test(c.key)).map(c => {
               const active = columns.get(c.key) && columns.get(c.key).get('active')
-              const disabled = !resultEditor.get('replies') || resultEditor.get('collapsedReplies')
+              const disabled = !includeReplies || resultEditor.get('collapsedReplies')
               return this.renderColumnSwitch(c, active, disabled)
             })}
           </div>
@@ -103,19 +105,27 @@ class DataToolbar extends Component {
       checked: active,
       label: c.name,
       disabled: disabled,
-      onChange: this.toggleColumn
+      onChange: this.toggleColumn,
+      tooltip: `Include '${c.name}' column`
     })
   }
 
-  renderSwitch ({ key, name, disabled, onChange, checked, label }) {
+  renderSwitch ({ key, name, disabled, onChange, checked, label, tooltip }) {
+    const switchElem = (
+      <Switch
+        name={name}
+        onChange={onChange}
+        checked={checked}
+        disabled={disabled}
+        label={label} />
+    )
+
     return (
       <div key={key} className='col-sm-6 col-md-3 col-lg-3'>
-        <Switch
-          name={name}
-          onChange={onChange}
-          checked={checked}
-          disabled={disabled}
-          label={label} />
+        {tooltip
+          ? <Tooltip content={tooltip} position={Position.BOTTOM}>{switchElem}</Tooltip>
+          : switchElem
+        }
       </div>
     )
   }
@@ -124,12 +134,12 @@ class DataToolbar extends Component {
     this.props.toggleColumn(e.target.name)
   }
 
-  toggleReplies () {
-    this.props.toggleReplies()
+  setIncludeReplies (e) {
+    this.props.setIncludeReplies(e.target.checked)
   }
 
-  toggleCollapsedReplies () {
-    this.props.toggleCollapsedReplies()
+  setRepliesCollapsed (e) {
+    this.props.setRepliesCollapsed(e.target.checked)
   }
 }
 

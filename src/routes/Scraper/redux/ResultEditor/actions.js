@@ -7,21 +7,16 @@ export function toggleColumn (key) {
   }
 }
 
-export function toggleMultipleColumns (keys) {
+export function setIncludeReplies (includeReplies) {
   return {
-    type: types.TOGGLE_MULTIPLE_COLUMNS,
-    payload: { keys }
+    type: types.SET_INCLUDE_REPLIES,
+    payload: { includeReplies }
   }
 }
 
-export function toggleReplies () {
+export function setRepliesCollapsed (repliesCollapsed) {
   return {
-    type: types.TOGGLE_REPLIES
-  }
-}
-
-export function toggleCollapsedReplies () {
-  return {
-    type: types.TOGGLE_COLLAPSED_REPLIES
+    type: types.SET_REPLIES_COLLAPSED,
+    payload: { repliesCollapsed }
   }
 }
