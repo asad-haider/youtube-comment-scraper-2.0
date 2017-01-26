@@ -6,6 +6,13 @@ import { List } from 'immutable'
 import defaultColumns from './columns'
 import './CommentTable.scss'
 
+const indexColumn = {
+  name: '',
+  key: '_index',
+  width: 40,
+  resizable: true
+}
+
 class CommentTable extends Component {
   displayName: 'CommentTable'
   propTypes: {
@@ -28,8 +35,9 @@ class CommentTable extends Component {
       return
     }
 
-    const rows = nextProps.comments.reduce((cs, c) =>
-      cs.concat(this.flattenReplies(c)), List())
+    const rows = nextProps.comments
+      .reduce((cs, c) => cs.concat(this.flattenReplies(c)), List())
+      .map((c, i) => c.set('_index', (i + 1)))
 
     this.setState({ rows })
   }
@@ -38,8 +46,10 @@ class CommentTable extends Component {
     const { rows } = this.state
     const resultEditor = this.props.resultEditor.toObject()
 
-    const columns = defaultColumns
+    const activeColumns = defaultColumns
       .filter(c => resultEditor.columns.get(c.key) && resultEditor.columns.get(c.key).get('active'))
+
+    const columns = [indexColumn].concat(activeColumns)
 
     return (
       <Measure>

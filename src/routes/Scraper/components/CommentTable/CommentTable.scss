@@ -18,3 +18,8 @@
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #dddddd;
 }
+
+.comment-table-component .react-grid-Row > .react-grid-Cell:nth-child(1) {
+  background: #efefef;
+  text-align: right;
+}
