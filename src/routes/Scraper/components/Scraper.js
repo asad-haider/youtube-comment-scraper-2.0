@@ -99,7 +99,8 @@ class Scraper extends Component {
               loading={loading}
               resultEditor={this.props.resultEditor}
               toggleColumn={this.props.toggleColumn}
-              toggleMultipleColumns={this.props.toggleMultipleColumns} />
+              toggleReplies={this.props.toggleReplies}
+              toggleCollapsedReplies={this.props.toggleCollapsedReplies} />
           </Box>
         </Collapse>
         <Collapse isOpen={filtersToolbarIsOpen}>

@@ -13,3 +13,15 @@ export function toggleMultipleColumns (keys) {
     payload: { keys }
   }
 }
+
+export function toggleReplies () {
+  return {
+    type: types.TOGGLE_REPLIES
+  }
+}
+
+export function toggleCollapsedReplies () {
+  return {
+    type: types.TOGGLE_COLLAPSED_REPLIES
+  }
+}

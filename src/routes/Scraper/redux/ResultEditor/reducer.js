@@ -14,7 +14,9 @@ const initialState = Map({
   collapsedReplies: false
 })
 
-console.log('initialState', initialState.toJS())
+
+// TODO: TOGGLE IS BAD, use explicit setters!
+
 
 export default function resultEditorReducer (state = initialState, action) {
   switch (action.type) {
@@ -28,12 +30,27 @@ export default function resultEditorReducer (state = initialState, action) {
           cols[k].set('active', !cols[k].get('active'))))
 
     case types.TOGGLE_REPLIES:
-      return state.set('replies', !state.get('replies'))
+      return setReplyColumns(
+        state.set('replies', !state.get('replies')),
+        !state.get('replies'))
 
     case types.TOGGLE_COLLAPSED_REPLIES:
-      return state.set('collapsedReplies', !state.get('collapsedReplies'))
+      return setReplyColumns(
+        state.set('collapsedReplies', !state.get('collapsedReplies')),
+        state.get('collapsedReplies'))
 
     default:
       return state
   }
+}
+
+function setReplyColumns (state, active) {
+  return state.update('columns', cols =>
+    cols.map((col, key) => {
+      if (/^reply_/.test(key)) {
+        return col.set('active', active)
+      } else {
+        return col
+      }
+    }))
 }

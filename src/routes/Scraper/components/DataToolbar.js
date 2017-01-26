@@ -10,12 +10,14 @@ class DataToolbar extends Component {
     resultEditor: PropTypes.object.isRequired,
     loading: PropTypes.boolean,
     toggleColumn: PropTypes.func,
-    toggleMultipleColumns: PropTypes.func
+    toggleReplies: PropTypes.func,
+    toggleCollapsedReplies: PropTypes.func
   }
   defaultProps: {
     loading: true,
     toggleColumn: () => {},
-    toggleMultipleColumns: () => {}
+    toggleReplies: () => {},
+    toggleCollapsedReplies: () => {}
   }
 
   constructor (props) {
@@ -24,6 +26,8 @@ class DataToolbar extends Component {
     this.renderRepliesTab = this.renderRepliesTab.bind(this)
     this.renderColumnSwitch = this.renderColumnSwitch.bind(this)
     this.toggleColumn = this.toggleColumn.bind(this)
+    this.toggleReplies = this.toggleReplies.bind(this)
+    this.toggleCollapsedReplies = this.toggleCollapsedReplies.bind(this)
   }
 
   render () {
@@ -59,35 +63,46 @@ class DataToolbar extends Component {
   }
 
   renderRepliesTab () {
-    const { resultEditor } = this.props
+    const { loading, resultEditor } = this.props
     const { columns } = resultEditor.toObject()
 
     return (
       <TabPanel>
         <div className='data-toolbar-tab-panel'>
           <div className='row'>
-            {this.renderSwitch({ label: 'Include Replies', checked: true })}
-            {this.renderSwitch({ label: 'Collapse Replies', checked: true })}
+            {this.renderSwitch({
+              label: 'Include Replies',
+              checked: resultEditor.get('replies'),
+              onChange: this.toggleReplies
+            })}
+
+            {this.renderSwitch({
+              disabled: !resultEditor.get('replies'),
+              label: 'Collapse Replies',
+              checked: resultEditor.get('collapsedReplies'),
+              onChange: this.toggleCollapsedReplies
+            })}
           </div>
           <hr />
           <div className='row'>
-            {defaultColumns.filter(c => /^reply_/.test(c.key)).map(c =>
-              this.renderColumnSwitch(c, (columns.get(c.key) && columns.get(c.key).get('active'))))
-            }
+            {defaultColumns.filter(c => /^reply_/.test(c.key)).map(c => {
+              const active = columns.get(c.key) && columns.get(c.key).get('active')
+              const disabled = !resultEditor.get('replies') || resultEditor.get('collapsedReplies')
+              return this.renderColumnSwitch(c, active, disabled)
+            })}
           </div>
         </div>
       </TabPanel>
     )
   }
 
-  renderColumnSwitch (c, active) {
-    const { loading } = this.props
+  renderColumnSwitch (c, active, disabled = false) {
     return this.renderSwitch({
       key: `column_${c.key}`,
       name: c.key,
       checked: active,
       label: c.name,
-      disabled: loading,
+      disabled: disabled,
       onChange: this.toggleColumn
     })
   }
@@ -96,10 +111,10 @@ class DataToolbar extends Component {
     return (
       <div key={key} className='col-sm-6 col-md-3 col-lg-3'>
         <Switch
-          className={disabled ? 'disabled' : ''}
           name={name}
-          onChange={this.toggleColumn}
+          onChange={onChange}
           checked={checked}
+          disabled={disabled}
           label={label} />
       </div>
     )
@@ -107,6 +122,14 @@ class DataToolbar extends Component {
 
   toggleColumn (e) {
     this.props.toggleColumn(e.target.name)
+  }
+
+  toggleReplies () {
+    this.props.toggleReplies()
+  }
+
+  toggleCollapsedReplies () {
+    this.props.toggleCollapsedReplies()
   }
 }
 

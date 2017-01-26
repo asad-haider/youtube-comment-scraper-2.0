@@ -30,13 +30,28 @@ class CommentTable extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // if comments haven't changed dont' do anything
-    if (!nextProps.comments || nextProps.comments === this.props.comments) {
+    const needToRecomputeComments = (
+      nextProps.comments !== this.props.comments ||
+      nextProps.resultEditor.get('replies') !== this.props.resultEditor.get('replies') ||
+      nextProps.resultEditor.get('collapsedReplies') !== this.props.resultEditor.get('collapsedReplies')
+    )
+
+    if (!needToRecomputeComments) {
       return
     }
 
-    const rows = nextProps.comments
-      .reduce((cs, c) => cs.concat(this.flattenReplies(c)), List())
+    let comments
+    if (!nextProps.resultEditor.get('replies')) {
+      comments = nextProps.comments
+    } else if (!nextProps.resultEditor.get('collapsedReplies')) {
+      comments = nextProps.comments
+        .reduce((cs, c) => cs.concat(this.flattenReplies(c)), List())
+    } else {
+      comments = nextProps.comments
+        .reduce((cs, c) => cs.concat(this.collapseReplies(c)), List())
+    }
+
+    const rows = comments
       .map((c, i) => c.set('_index', (i + 1)))
 
     this.setState({ rows })
@@ -78,6 +93,12 @@ class CommentTable extends Component {
 
     const replies = c.get('replies').map(r => r.mapKeys(k => `reply_${k}`))
     return List.of(c).concat(replies)
+  }
+
+  collapseReplies (c) {
+    return (!c.get('hasReplies'))
+      ? List.of(c)
+      : List.of(c).concat(c.get('replies'))
   }
 }
 
