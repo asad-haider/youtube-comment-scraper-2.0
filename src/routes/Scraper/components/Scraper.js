@@ -88,6 +88,7 @@ class Scraper extends Component {
         <Box className='ui-component scraper-toolbar-container'>
           <ScraperToolbar
             loading={loading}
+            complete={complete}
             dataOptionsToolbar={dataOptionsToolbarIsOpen}
             filtersToolbar={filtersToolbarIsOpen}
             toggleDataOptionsToolbar={this.toggleDataOptionsToolbar}
