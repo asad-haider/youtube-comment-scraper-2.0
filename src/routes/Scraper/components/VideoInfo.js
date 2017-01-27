@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { Flex, Box } from 'reflexbox'
-import { Collapse } from '@blueprintjs/core'
 import moment from 'moment'
 import './VideoInfo.scss'
 
@@ -32,13 +31,13 @@ class VideoInfo extends Component {
           <Box>
             {this.renderCollapseButton()}
           </Box>
-          <Box auto>
+          <Box px={1} auto>
             {videoInfo ? this.renderTitle(videoInfo) : this.renderSkeletonTitle()}
           </Box>
         </Flex>
-        <Collapse isOpen={!collapsed}>
-          {videoInfo ? this.renderVideoInfo() : this.renderSkeletonContent()}
-        </Collapse>
+        {!collapsed &&
+          (videoInfo ? this.renderVideoInfo() : this.renderSkeletonContent())
+        }
       </div>
     )
   }
@@ -125,7 +124,7 @@ class VideoInfo extends Component {
         <Box className='video-thumb-box'>
           <div className='video-thumb pt-skeleton' />
         </Box>
-        
+
         <Box className='video-info-box' auto>
           <p className='video-info-item pt-skeleton'>Lorem ipsum dolor sit amet</p>
           <p className='video-info-item pt-skeleton'>Lorem ipsum dolor sit amet</p>

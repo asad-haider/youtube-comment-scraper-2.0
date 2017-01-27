@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { Flex, Box } from 'reflexbox'
-import { Collapse } from '@blueprintjs/core'
 import './Scraper.scss'
 
 import ScraperHeader from './ScraperHeader'
