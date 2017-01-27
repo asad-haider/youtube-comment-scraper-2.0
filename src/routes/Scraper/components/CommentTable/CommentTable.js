@@ -23,9 +23,11 @@ class CommentTable extends Component {
   constructor (props) {
     super(props)
     this.rowGetter = this.rowGetter.bind(this)
+    this.setHeight = this.setHeight.bind(this)
 
     this.state = {
-      rows: List()
+      rows: List(),
+      height: 0
     }
   }
 
@@ -60,7 +62,7 @@ class CommentTable extends Component {
   }
 
   render () {
-    const { rows } = this.state
+    const { rows, height } = this.state
     const resultEditor = this.props.resultEditor.toObject()
 
     const activeColumns = defaultColumns
@@ -69,23 +71,25 @@ class CommentTable extends Component {
     const columns = [indexColumn].concat(activeColumns)
 
     return (
-      <Measure>
-        {({ width, height }) => (
-          <div className='comment-table-component'>
-            <DataGrid
-              columns={columns}
-              minHeight={height}
-              rowHeight={25}
-              rowGetter={this.rowGetter}
-              rowsCount={rows.size} />
-          </div>
-        )}
+      <Measure whitelist={['height']} onMeasure={this.setHeight}>
+        <div className='comment-table-component'>
+          <DataGrid
+            columns={columns}
+            minHeight={height}
+            rowHeight={25}
+            rowGetter={this.rowGetter}
+            rowsCount={rows.size} />
+        </div>
       </Measure>
     )
   }
 
   rowGetter (i) {
     return this.state.rows.get(i)
+  }
+
+  setHeight ({ height }) {
+    this.setState({ height })
   }
 
   flattenReplies (c) {

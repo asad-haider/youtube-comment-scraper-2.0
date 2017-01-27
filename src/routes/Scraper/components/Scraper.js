@@ -94,7 +94,8 @@ class Scraper extends Component {
             toggleDataOptionsToolbar={this.toggleDataOptionsToolbar}
             toggleFiltersToolbar={this.toggleFiltersToolbar} />
         </Box>
-        <Collapse isOpen={dataOptionsToolbarIsOpen}>
+
+        {dataOptionsToolbarIsOpen &&
           <Box className='ui-component comment-table-container'>
             <DataToolbar
               loading={loading}
@@ -103,15 +104,20 @@ class Scraper extends Component {
               setIncludeReplies={this.props.setIncludeReplies}
               setRepliesCollapsed={this.props.setRepliesCollapsed} />
           </Box>
-        </Collapse>
-        <Collapse isOpen={filtersToolbarIsOpen}>
+        }
+
+        {filtersToolbarIsOpen &&
           <Box className='ui-component comment-table-container'>
             <FiltersToolbar loading={loading} />
           </Box>
-        </Collapse>
+        }
 
         <Box className='ui-component comment-table-container' auto>
           <CommentTable resultEditor={resultEditor} comments={comments} />
+        </Box>
+
+        <Box className='ui-component status-bar-container'>
+          <div>The End</div>
         </Box>
       </Flex>
     )
