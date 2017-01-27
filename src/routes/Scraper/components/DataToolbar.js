@@ -121,7 +121,7 @@ class DataToolbar extends Component {
     )
 
     return (
-      <div key={key} className='col-sm-6 col-md-3 col-lg-3'>
+      <div key={key} className='col-sm-6 col-md-3 col-lg-2 data-toolbar-switch'>
         {tooltip
           ? <Tooltip content={tooltip} position={Position.BOTTOM}>{switchElem}</Tooltip>
           : switchElem
