@@ -14,7 +14,6 @@ class Scraper extends Component {
   propTypes: {
     videoId: PropTypes.string.isRequired,
     scraper: PropTypes.object.isRequired,
-    resultEditor: PropTypes.object.isRequired,
     router: PropTypes.obect.isRequired,
     route: PropTypes.string.isRequired
   }
@@ -62,9 +61,11 @@ class Scraper extends Component {
   }
 
   render () {
-    const { resultEditor, scraper } = this.props
-    const { comments, videoInfo, complete } = scraper.toObject()
+    const { scraper } = this.props
+    const { resultEditor, editedComments, comments, videoInfo, complete } = scraper.toObject()
+    const { operationPending } = resultEditor.toObject()
     const { progressDismissed, dataOptionsToolbarIsOpen, filtersToolbarIsOpen } = this.state
+
     const loading = Boolean(videoInfo)
     const progress = {
       totalCommentCount: videoInfo ? videoInfo.get('commentCount') : 0,
@@ -86,6 +87,7 @@ class Scraper extends Component {
 
         <Box className='ui-component scraper-toolbar-container'>
           <ScraperToolbar
+            operationPending={operationPending}
             loading={loading}
             complete={complete}
             dataOptionsToolbar={dataOptionsToolbarIsOpen}
@@ -98,7 +100,7 @@ class Scraper extends Component {
           <Box className='ui-component comment-table-container'>
             <DataToolbar
               loading={loading}
-              resultEditor={this.props.resultEditor}
+              resultEditor={resultEditor}
               toggleColumn={this.props.toggleColumn}
               setIncludeReplies={this.props.setIncludeReplies}
               setRepliesCollapsed={this.props.setRepliesCollapsed} />
@@ -112,7 +114,7 @@ class Scraper extends Component {
         }
 
         <Box className='ui-component comment-table-container' auto>
-          <CommentTable resultEditor={resultEditor} comments={comments} />
+          <CommentTable resultEditor={resultEditor} comments={editedComments} />
         </Box>
 
         <Box className='ui-component status-bar-container'>

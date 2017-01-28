@@ -1,5 +1,16 @@
 import React, { Component, PropTypes } from 'react'
-import { AnchorButton, Popover, PopoverInteractionKind, Position, Menu, MenuItem } from '@blueprintjs/core'
+import { Flex, Box } from 'reflexbox'
+import {
+  Spinner,
+  Classes,
+  Intent,
+  AnchorButton,
+  Popover,
+  PopoverInteractionKind,
+  Position,
+  Menu,
+  MenuItem
+} from '@blueprintjs/core'
 
 import './ScraperToolbar.scss'
 
@@ -31,6 +42,7 @@ class ScraperToolbar extends Component {
   render () {
     const {
       loading,
+      operationPending,
       dataOptionsToolbar,
       filtersToolbar,
       toggleDataOptionsToolbar,
@@ -38,24 +50,37 @@ class ScraperToolbar extends Component {
     } = this.props
 
     return (
-      <div className='scraper-toolbar-component'>
-        <div className='pt-button-group pt-minimal'>
-          <button
-            className={`pt-button pt-icon-database ${dataOptionsToolbar ? 'pt-active' : ''}`}
-            onClick={toggleDataOptionsToolbar}
-            disabled={!loading}>
-              Data Options
-          </button>
-          <button
-            className={`pt-button pt-icon-filter-list ${filtersToolbar ? 'pt-active' : ''}`}
-            onClick={toggleFiltersToolbar}
-            disabled={!loading}>
-              Filters
-          </button>
+      <Flex justify='space-around' className='scraper-toolbar-component'>
+        <Box auto>
+          <div className='pt-button-group pt-minimal'>
+            <button
+              className={`pt-button pt-icon-database ${dataOptionsToolbar ? 'pt-active' : ''}`}
+              onClick={toggleDataOptionsToolbar}
+              disabled={!loading}>
+                Data Options
+            </button>
+            <button
+              className={`pt-button pt-icon-filter-list ${filtersToolbar ? 'pt-active' : ''}`}
+              onClick={toggleFiltersToolbar}
+              disabled={!loading}>
+                Filters
+            </button>
 
-          {this.renderDownloadMenu()}
+            {this.renderDownloadMenu()}
 
-        </div>
+          </div>
+        </Box>
+        <Box px={1}>
+          {operationPending && this.renderSpinner()}
+        </Box>
+      </Flex>
+    )
+  }
+
+  renderSpinner () {
+    return (
+      <div style={{paddingTop: '2px'}}>
+        <Spinner className={Classes.SMALL} intent={Intent.PRIMARY} />
       </div>
     )
   }

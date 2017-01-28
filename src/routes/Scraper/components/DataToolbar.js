@@ -54,7 +54,7 @@ class DataToolbar extends Component {
         <div className='data-toolbar-tab-panel'>
           <div className='row'>
             {defaultColumns.filter(c => !/^reply_/.test(c.key)).map(c =>
-              this.renderColumnSwitch(c, (columns.get(c.key) && columns.get(c.key).get('active'))))
+              this.renderColumnSwitch(c, (columns.getIn([c.key, 'active']))))
             }
           </div>
         </div>
@@ -88,7 +88,7 @@ class DataToolbar extends Component {
           <hr />
           <div className='row'>
             {defaultColumns.filter(c => /^reply_/.test(c.key)).map(c => {
-              const active = columns.get(c.key) && columns.get(c.key).get('active')
+              const active = columns.getIn([c.key, 'active'])
               const disabled = !includeReplies || repliesCollapsed
               return this.renderColumnSwitch(c, active, disabled)
             })}

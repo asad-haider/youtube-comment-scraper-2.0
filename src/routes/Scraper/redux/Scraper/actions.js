@@ -1,9 +1,23 @@
 import * as types from './action-types'
 import * as socketMessages from './socket-messages'
-
 import initWebsocket from './websocket'
 
-export function init () {
+import * as resultEditorActions from './ResultEditor/actions'
+
+module.exports = {
+  ...resultEditorActions,
+  init,
+  socketInit,
+  closeSocket,
+  scrape,
+  scraperComplete,
+  scraperError,
+  resetScraper,
+  commentsReceived,
+  videoInfoReceived
+}
+
+function init () {
   return (dispatch) => {
     const socket = initWebsocket()
 
@@ -16,14 +30,14 @@ export function init () {
   }
 }
 
-export function socketInit (socket) {
+function socketInit (socket) {
   return {
     type: types.INIT_SOCKET,
     payload: socket
   }
 }
 
-export function closeSocket () {
+function closeSocket () {
   return (dispatch, getState) => {
     closeSocketInState(getState())
     dispatch(socketClosed())
@@ -36,7 +50,7 @@ function socketClosed () {
   }
 }
 
-export function scrape (videoId) {
+function scrape (videoId) {
   return (dispatch, getState) => {
     const emit = getSocketMethod(getState(), 'emit')
     if (!emit) {
@@ -56,20 +70,20 @@ function scrapeStarted (videoId) {
   }
 }
 
-export function scraperComplete () {
+function scraperComplete () {
   return {
     type: types.SCRAPER_COMPLETE
   }
 }
 
-export function scraperError (error) {
+function scraperError (error) {
   return {
     type: types.SCRAPER_ERROR,
     payload: { error }
   }
 }
 
-export function resetScraper () {
+function resetScraper () {
   return (dispatch, getState) => {
     closeSocketInState(getState())
     dispatch(scraperReset())
@@ -82,14 +96,14 @@ function scraperReset () {
   }
 }
 
-export function commentsReceived (comments) {
+function commentsReceived (comments) {
   return {
     type: types.COMMENTS_RECEIVED,
     payload: { comments }
   }
 }
 
-export function videoInfoReceived (videoInfo) {
+function videoInfoReceived (videoInfo) {
   return {
     type: types.VIDEO_INFO_RECEIVED,
     payload: { videoInfo }

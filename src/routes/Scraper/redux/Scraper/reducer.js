@@ -2,11 +2,15 @@ import * as types from './action-types'
 import prop from 'propper'
 import Immutable, { Map, List } from 'immutable'
 
+import resultEditorReducer from './ResultEditor'
+
 const initialState = Map({
   socket: null,
   videoInfo: null,
   complete: false,
-  comments: List()
+  comments: List(),
+  editedComments: List(),
+  resultEditor: resultEditorReducer(undefined, {})
 })
 
 const immutableFromProp = (object, path) =>
@@ -32,13 +36,54 @@ export default function scraperReducer (state = initialState, action) {
     case types.SCRAPER_RESET:
       return initialState
 
-    case types.COMMENTS_RECEIVED:
-      return state.update('comments', cs => cs.concat(List(Immutable.fromJS(action.payload.comments))))
-
     case types.VIDEO_INFO_RECEIVED:
       return state.set('videoInfo', immutableFromProp(action, 'payload.videoInfo'))
+
+    case types.COMMENTS_RECEIVED:
+      return applyRepliesEdits(
+        state.update('comments', cs => cs.concat(immutableFromProp(action, 'payload.comments'))))
+
+    case types.SET_INCLUDE_REPLIES:
+    case types.SET_REPLIES_COLLAPSED:
+      return applyResultEditorReducer(applyRepliesEdits(state), action)
+
+    case types.TOGGLE_COLUMN:
+    case types.TOGGLE_COLUMN_REQ:
+    case types.SET_INCLUDE_REPLIES_REQ:
+    case types.SET_REPLIES_COLLAPSED_REQ:
+      return applyResultEditorReducer(state, action)
 
     default:
       return state
   }
+}
+
+function applyResultEditorReducer (state, action) {
+  return state.set('resultEditor', resultEditorReducer(state.get('resultEditor'), action))
+}
+
+function applyRepliesEdits (state) {
+  const { comments, resultEditor } = state.toObject()
+
+  return state.set('editedComments',
+    (!resultEditor.get('includeReplies'))
+      ? comments
+      : (!resultEditor.get('repliesCollapsed'))
+      ? comments.reduce((cs, c) => cs.concat(flattenReplies(c)), List())
+      : comments.reduce((cs, c) => cs.concat(collapseReplies(c)), List()))
+}
+
+function flattenReplies (c) {
+  if (!c.get('hasReplies')) {
+    return List.of(c)
+  }
+
+  const replies = c.get('replies').map(r => r.mapKeys(k => `reply_${k}`))
+  return List.of(c).concat(replies)
+}
+
+function collapseReplies (c) {
+  return (!c.get('hasReplies'))
+    ? List.of(c)
+    : List.of(c).concat(c.get('replies'))
 }
