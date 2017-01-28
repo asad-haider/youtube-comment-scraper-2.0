@@ -11,10 +11,9 @@ class VideoInfo extends Component {
 
   constructor (props) {
     super(props)
-    this.renderCollapseButton = this.renderCollapseButton.bind(this)
     this.toggleCollapse = this.toggleCollapse.bind(this)
     this.renderVideoInfo = this.renderVideoInfo.bind(this)
-    this.toggleExpandDescription = this.toggleExpandDescription.bind(this)
+    this.renderTitle = this.renderTitle.bind(this)
 
     this.state = {
       collapsed: true
@@ -27,14 +26,9 @@ class VideoInfo extends Component {
 
     return (
       <div className='video-info'>
-        <Flex className='video-title-container'>
-          <Box>
-            {this.renderCollapseButton()}
-          </Box>
-          <Box px={1} auto>
-            {videoInfo ? this.renderTitle(videoInfo) : this.renderSkeletonTitle()}
-          </Box>
-        </Flex>
+        <div className='video-title-container'>
+          {videoInfo ? this.renderTitle(videoInfo) : this.renderSkeletonTitle()}
+        </div>
         {!collapsed &&
           (videoInfo ? this.renderVideoInfo() : this.renderSkeletonContent())
         }
@@ -49,22 +43,15 @@ class VideoInfo extends Component {
   }
 
   renderTitle (videoInfo) {
-    return (
-      <h4 className='video-title'>
-        <a target='_blank' href={`https://www.youtube.com/watch?v=${videoInfo.get('videoId')}`}>
-          {videoInfo.get('title')}
-        </a>
-      </h4>
-    )
-  }
-
-  renderCollapseButton () {
     const { collapsed } = this.state
     const chevronClass = collapsed ? 'pt-icon-chevron-down' : 'pt-icon-chevron-up'
     return (
-      <button
-        className={`pt-button pt-minimal ${chevronClass}`}
-        onClick={this.toggleCollapse} />
+      <h4 className='video-title' onClick={this.toggleCollapse}>
+        <span className={`expand-info-button ${chevronClass}`} />
+        <a>
+          {videoInfo.get('title')}
+        </a>
+      </h4>
     )
   }
 
@@ -80,7 +67,9 @@ class VideoInfo extends Component {
     return (
       <Flex className='video-details' justify='flex-start' style={{ width: '100%' }}>
         <Box className='video-thumb-box'>
-          <img className='video-thumb' src={videoInfo.get('thumbnailUrl')} />
+          <a target='_blank' href={`https://www.youtube.com/watch?v=${videoInfo.get('videoId')}`}>
+            <img className='video-thumb' src={videoInfo.get('thumbnailUrl')} />
+          </a>
         </Box>
 
         <Box className='video-info-box' auto>
@@ -88,11 +77,10 @@ class VideoInfo extends Component {
           <p className='video-info-item'>
             Published by&nbsp;
             {videoInfo.get('channelId')
-              ? <a
-                  href={`https://www.youtube.com/channel/${videoInfo.get('channelId')}`}
-                  target='_blank'>
-                        {videoInfo.get('owner')}
-                  </a>
+              ? <a href={`https://www.youtube.com/channel/${videoInfo.get('channelId')}`}
+                   target='_blank'>
+                 {videoInfo.get('owner')}
+                </a>
               : videoInfo.get('owner')}
             &nbsp;on {moment(videoInfo.get('datePublished', 'YYYY-MM-DD')).format('MMM Do YYYY')}
           </p>
@@ -137,14 +125,6 @@ class VideoInfo extends Component {
         </Box>
       </Flex>
     )
-  }
-
-  toggleExpandDescription (e) {
-    e.preventDefault()
-    const { descriptionExpanded } = this.state
-    this.setState({
-      descriptionExpanded: !descriptionExpanded
-    })
   }
 }
 

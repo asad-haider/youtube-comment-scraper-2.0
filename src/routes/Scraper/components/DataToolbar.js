@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Switch, Tooltip, Position, Tabs, TabList, Tab, TabPanel } from '@blueprintjs/core'
+import { Checkbox, Switch, Tooltip, Position, Tabs, TabList, Tab, TabPanel } from '@blueprintjs/core'
 
 import defaultColumns from './CommentTable/columns'
 import './DataToolbar.scss'
@@ -112,7 +112,7 @@ class DataToolbar extends Component {
 
   renderSwitch ({ key, name, disabled, onChange, checked, label, tooltip }) {
     const switchElem = (
-      <Switch
+      <Checkbox
         name={name}
         onChange={onChange}
         checked={checked}

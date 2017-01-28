@@ -116,10 +116,6 @@ class Scraper extends Component {
         <Box className='ui-component comment-table-container' auto>
           <CommentTable resultEditor={resultEditor} comments={editedComments} />
         </Box>
-
-        <Box className='ui-component status-bar-container'>
-          <div>The End</div>
-        </Box>
       </Flex>
     )
   }

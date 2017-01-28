@@ -6,6 +6,22 @@
 .video-title {
   margin: 0;
   padding: 0.3em 0;
+  cursor: pointer;
+}
+
+.expand-info-button {
+  color: #888;
+  padding-right: 0.3em;
+  cursor: pointer;
+}
+
+.video-title:hover .expand-info-button {
+  color: #333;
+  text-decoration: none;
+}
+
+.video-title:hover a {
+  text-decoration: underline;
 }
 
 .video-details {
