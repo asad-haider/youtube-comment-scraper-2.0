@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Checkbox, Switch, Tooltip, Position, Tabs, TabList, Tab, TabPanel } from '@blueprintjs/core'
+import { Checkbox, Tooltip, Position, Tabs, TabList, Tab, TabPanel } from '@blueprintjs/core'
 
 import defaultColumns from './CommentTable/columns'
 import './DataToolbar.scss'
@@ -24,7 +24,7 @@ class DataToolbar extends Component {
     super(props)
     this.renderCommentsTab = this.renderCommentsTab.bind(this)
     this.renderRepliesTab = this.renderRepliesTab.bind(this)
-    this.renderColumnSwitch = this.renderColumnSwitch.bind(this)
+    this.renderColumnCheckbox = this.renderColumnCheckbox.bind(this)
     this.toggleColumn = this.toggleColumn.bind(this)
     this.setIncludeReplies = this.setIncludeReplies.bind(this)
     this.setRepliesCollapsed = this.setRepliesCollapsed.bind(this)
@@ -54,7 +54,7 @@ class DataToolbar extends Component {
         <div className='data-toolbar-tab-panel'>
           <div className='row'>
             {defaultColumns.filter(c => !/^reply_/.test(c.key)).map(c =>
-              this.renderColumnSwitch(c, (columns.getIn([c.key, 'active']))))
+              this.renderColumnCheckbox(c, (columns.getIn([c.key, 'active']))))
             }
           </div>
         </div>
@@ -70,14 +70,14 @@ class DataToolbar extends Component {
       <TabPanel>
         <div className='data-toolbar-tab-panel'>
           <div className='row'>
-            {this.renderSwitch({
+            {this.renderCheckbox({
               label: 'Include Replies',
               checked: includeReplies,
               onChange: this.setIncludeReplies,
               tooltip: 'Include comment replies.'
             })}
 
-            {this.renderSwitch({
+            {this.renderCheckbox({
               disabled: !includeReplies,
               label: 'Collapse Replies',
               checked: repliesCollapsed,
@@ -90,7 +90,7 @@ class DataToolbar extends Component {
             {defaultColumns.filter(c => /^reply_/.test(c.key)).map(c => {
               const active = columns.getIn([c.key, 'active'])
               const disabled = !includeReplies || repliesCollapsed
-              return this.renderColumnSwitch(c, active, disabled)
+              return this.renderColumnCheckbox(c, active, disabled)
             })}
           </div>
         </div>
@@ -98,8 +98,8 @@ class DataToolbar extends Component {
     )
   }
 
-  renderColumnSwitch (c, active, disabled = false) {
-    return this.renderSwitch({
+  renderColumnCheckbox (c, active, disabled = false) {
+    return this.renderCheckbox({
       key: `column_${c.key}`,
       name: c.key,
       checked: active,
@@ -110,8 +110,8 @@ class DataToolbar extends Component {
     })
   }
 
-  renderSwitch ({ key, name, disabled, onChange, checked, label, tooltip }) {
-    const switchElem = (
+  renderCheckbox ({ key, name, disabled, onChange, checked, label, tooltip }) {
+    const checkboxElem = (
       <Checkbox
         name={name}
         onChange={onChange}
@@ -123,8 +123,8 @@ class DataToolbar extends Component {
     return (
       <div key={key} className='col-sm-6 col-md-3 col-lg-2 data-toolbar-switch'>
         {tooltip
-          ? <Tooltip content={tooltip} position={Position.BOTTOM}>{switchElem}</Tooltip>
-          : switchElem
+          ? <Tooltip content={tooltip} position={Position.BOTTOM}>{checkboxElem}</Tooltip>
+          : checkboxElem
         }
       </div>
     )
