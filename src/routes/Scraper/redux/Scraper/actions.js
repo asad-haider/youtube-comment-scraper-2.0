@@ -1,3 +1,8 @@
+import fileDownload from 'react-file-download'
+import { pick } from 'lodash'
+import { List } from 'immutable'
+import json2csv from 'json2csv'
+
 import * as types from './action-types'
 import * as socketMessages from './socket-messages'
 import initWebsocket from './websocket'
@@ -14,7 +19,8 @@ module.exports = {
   scraperError,
   resetScraper,
   commentsReceived,
-  videoInfoReceived
+  videoInfoReceived,
+  downloadCsv
 }
 
 function init () {
@@ -119,5 +125,37 @@ function closeSocketInState (state) {
   const socketClose = getSocketMethod(state, 'close')
   if (socketClose) {
     socketClose()
+  }
+}
+
+function downloadCsv () {
+  return (dispatch, getState) => {
+    dispatch(downloadCsvReq())
+    const { scraper } = getState()
+    const fields = scraper.getIn(['resultEditor', 'columns'])
+      .filter(c => c.get('active'))
+      .toArray()
+      .map(c => ({
+        label: c.get('name'),
+        value: r => r.get(c.get('key')),
+        default: ''
+      }))
+    const data = scraper.get('editedComments').toArray()
+
+    const csv = json2csv({ fields, data })
+    fileDownload(csv, `${scraper.get('videoId')}.csv`)
+    dispatch(downloadCsvComplete())
+  }
+}
+
+function downloadCsvReq () {
+  return {
+    type: types.DOWNLOAD_CSV_REQ
+  }
+}
+
+function downloadCsvComplete () {
+  return {
+    type: types.DOWNLOAD_CSV_COMPLETE
   }
 }

@@ -5,3 +5,7 @@ Add sentiment analysis (https://www.npmjs.com/package/sentiment)
 Add status bar that shows number of rows and allows to jump to a specific row
 
 Add warning for Safari users that download is not going to work
+
+Add 'Reply To' column
+
+Add a human readable time (GMT)

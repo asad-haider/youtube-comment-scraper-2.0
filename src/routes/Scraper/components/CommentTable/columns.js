@@ -100,7 +100,7 @@ export default [
   },
   {
     key: 'reply_edited',
-    name: 'Edited',
+    name: 'Reply Edited',
     width: 60,
     resizable: true,
     formatter: BooleanColumnFormatter

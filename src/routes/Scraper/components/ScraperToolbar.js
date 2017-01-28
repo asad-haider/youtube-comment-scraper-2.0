@@ -21,22 +21,22 @@ class ScraperToolbar extends Component {
     complete: PropTypes.boolean,
     dataOptionsToolbar: PropTypes.boolean,
     filtersToolbar: PropTypes.boolean,
-    toggleDataOptionsToolbar: PropTypes.func,
-    toggleFiltersToolbar: PropTypes.func
+    toggleDataOptionsToolbar: PropTypes.isRequired,
+    toggleFiltersToolbar: PropTypes.func.isRequired,
+    downloadCsv: PropTypes.func.isRequired
   }
   defaultProps: {
     loading: true,
     complete: false,
     dataOptionsToolbar: false,
-    filtersToolbar: false,
-    toggleDataOptionsToolbar: () => {},
-    toggleFiltersToolbar: () => {}
+    filtersToolbar: false
   }
 
   constructor (props) {
     super(props)
 
     this.renderDownloadMenu = this.renderDownloadMenu.bind(this)
+    this.downloadCsv = this.downloadCsv.bind(this)
   }
 
   render () {
@@ -51,7 +51,7 @@ class ScraperToolbar extends Component {
 
     return (
       <Flex justify='space-around' className='scraper-toolbar-component'>
-        <Box auto>
+        <Box>
           <div className='pt-button-group pt-minimal'>
             <button
               className={`pt-button pt-icon-database ${dataOptionsToolbar ? 'pt-active' : ''}`}
@@ -70,7 +70,7 @@ class ScraperToolbar extends Component {
 
           </div>
         </Box>
-        <Box px={1}>
+        <Box auto>
           {operationPending && this.renderSpinner()}
         </Box>
       </Flex>
@@ -79,8 +79,8 @@ class ScraperToolbar extends Component {
 
   renderSpinner () {
     return (
-      <div style={{paddingTop: '2px'}}>
-        <Spinner className={Classes.SMALL} intent={Intent.PRIMARY} />
+      <div className='scraper-toolbar-spinner'>
+        <Spinner className={`${Classes.SMALL}`} intent={Intent.PRIMARY} />
       </div>
     )
   }
@@ -119,7 +119,7 @@ class ScraperToolbar extends Component {
   }
 
   downloadCsv () {
-    console.log('Download CSV')
+    this.props.downloadCsv()
   }
 
   downloadJson () {

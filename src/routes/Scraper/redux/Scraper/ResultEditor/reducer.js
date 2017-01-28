@@ -1,15 +1,15 @@
 import * as types from '../action-types'
-import Immutable, { Map } from 'immutable'
+import { Map, OrderedMap, fromJS } from 'immutable'
 import prop from 'propper'
 import { pick, keyBy } from 'lodash'
 
 import defaultColumns from '../../../components/CommentTable/columns'
 
 const importDefaultColumns = () =>
-  Map(keyBy(defaultColumns, 'key'))
-    .map(c => Immutable.fromJS({ ...pick(c, 'key'), active: true, display: true }))
-
-console.log('defaultColumns', importDefaultColumns(defaultColumns).toJS())
+  defaultColumns.reduce((m, c) => {
+    const col = fromJS({ ...pick(c, ['key', 'name']), active: true, display: true })
+    return m.set(c.key, col)
+  }, OrderedMap())
 
 const initialState = Map({
   operationPending: false,
@@ -62,10 +62,9 @@ export default function resultEditorReducer (state = initialState, action) {
 }
 
 function setReplyColumns (state, active) {
-  console.log('setReplyColumns to', active)
   return state.update('columns', cols =>
     cols.map((col, key) =>
       (/^reply_/.test(key))
-        ? col.merge({active: active, display: active})
+        ? col.merge({ active: active, display: active })
         : col))
 }

@@ -93,7 +93,8 @@ class Scraper extends Component {
             dataOptionsToolbar={dataOptionsToolbarIsOpen}
             filtersToolbar={filtersToolbarIsOpen}
             toggleDataOptionsToolbar={this.toggleDataOptionsToolbar}
-            toggleFiltersToolbar={this.toggleFiltersToolbar} />
+            toggleFiltersToolbar={this.toggleFiltersToolbar}
+            downloadCsv={this.props.downloadCsv} />
         </Box>
 
         {dataOptionsToolbarIsOpen &&

@@ -40,37 +40,66 @@ export default function scraperReducer (state = initialState, action) {
       return state.set('videoInfo', immutableFromProp(action, 'payload.videoInfo'))
 
     case types.COMMENTS_RECEIVED:
-      return applyRepliesEdits(
-        state.update('comments', cs => cs.concat(immutableFromProp(action, 'payload.comments'))))
+      return applyCommentEdits(state.update('comments', cs =>
+        cs.concat(immutableFromProp(action, 'payload.comments'))))
 
-    case types.SET_INCLUDE_REPLIES:
-    case types.SET_REPLIES_COLLAPSED:
-      return applyResultEditorReducer(applyRepliesEdits(state), action)
-
-    case types.TOGGLE_COLUMN:
     case types.TOGGLE_COLUMN_REQ:
     case types.SET_INCLUDE_REPLIES_REQ:
     case types.SET_REPLIES_COLLAPSED_REQ:
       return applyResultEditorReducer(state, action)
+
+    case types.TOGGLE_COLUMN:
+      return applyCommentEdits(applyResultEditorReducer(state, action))
+
+    case types.SET_INCLUDE_REPLIES:
+    case types.SET_REPLIES_COLLAPSED:
+      return applyCommentEdits(applyResultEditorReducer(state, action))
 
     default:
       return state
   }
 }
 
-function applyResultEditorReducer (state, action) {
-  return state.set('resultEditor', resultEditorReducer(state.get('resultEditor'), action))
+const filterFields = fields => c =>
+  c.filter((_, f) => fields.includes(f))
+
+const isReplyField = f =>
+  /^reply_/.test(f)
+
+const stripReplyPrefix = f =>
+  f.replace(/^reply_/, '')
+
+function applyCommentEdits (state) {
+  const { comments, resultEditor } = state.toObject()
+  const activeCommentFields = resultEditor.get('columns')
+    .toList()
+    .filter(c => c.get('display'))
+    .map(c => c.get('key'))
+    .concat(resultEditor.get('includeReplies') ? List.of('replies') : List())
+
+  const activeReplyFields = activeCommentFields
+    .filter(f => resultEditor.get('repliesCollapsed') ? !isReplyField(f) : isReplyField(f))
+    .map(stripReplyPrefix)
+
+  const filterCommentFields = filterFields(activeCommentFields)
+  const filterReplyFields = filterFields(activeReplyFields)
+
+  const editedComments = comments
+    .map(filterCommentFields)
+    .map(c => c.get('replies')
+      ? c.update('replies', rs => rs.map(filterReplyFields))
+      : c)
+
+  const res = state.set('editedComments', applyReplyEdits(editedComments, resultEditor))
+  return res
 }
 
-function applyRepliesEdits (state) {
-  const { comments, resultEditor } = state.toObject()
-
-  return state.set('editedComments',
-    (!resultEditor.get('includeReplies'))
-      ? comments
-      : (!resultEditor.get('repliesCollapsed'))
-      ? comments.reduce((cs, c) => cs.concat(flattenReplies(c)), List())
-      : comments.reduce((cs, c) => cs.concat(collapseReplies(c)), List()))
+function applyReplyEdits (comments, resultEditor) {
+  return (!resultEditor.get('includeReplies'))
+    ? comments
+    : (!resultEditor.get('repliesCollapsed'))
+    ? comments.reduce((cs, c) => cs.concat(flattenReplies(c)), List())
+    : comments.reduce((cs, c) => cs.concat(collapseReplies(c)), List())
 }
 
 function flattenReplies (c) {
@@ -86,4 +115,8 @@ function collapseReplies (c) {
   return (!c.get('hasReplies'))
     ? List.of(c)
     : List.of(c).concat(c.get('replies'))
+}
+
+function applyResultEditorReducer (state, action) {
+  return state.set('resultEditor', resultEditorReducer(state.get('resultEditor'), action))
 }
