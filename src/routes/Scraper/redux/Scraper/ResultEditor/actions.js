@@ -5,7 +5,7 @@ export function toggleColumn (key) {
     dispatch(toggleColumnReq(key))
 
     setTimeout(() =>
-      dispatch(toggleColumnDelayed(key)), 500)
+      dispatch(toggleColumnDelayed(key)), 10)
   }
 }
 
@@ -28,7 +28,7 @@ export function setIncludeReplies (includeReplies) {
     dispatch(setIncludeRepliesReq(includeReplies))
 
     setTimeout(() =>
-      dispatch(setIncludeRepliesDelayed(includeReplies)), 500)
+      dispatch(setIncludeRepliesDelayed(includeReplies)), 10)
   }
 }
 
@@ -51,7 +51,7 @@ export function setRepliesCollapsed (repliesCollapsed) {
     dispatch(setRepliesCollapsedReq(repliesCollapsed))
 
     setTimeout(() =>
-      dispatch(setRepliesCollapsedDelayed(repliesCollapsed)), 500)
+      dispatch(setRepliesCollapsedDelayed(repliesCollapsed)), 10)
   }
 }
 

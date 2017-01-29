@@ -5,6 +5,42 @@
   font-size: 10pt;
 }
 
+.comment-table-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.comment-table-cell {
+  font-size: 10pt;
+  border-bottom: 1px solid #d3d3d3;
+  padding: 0;
+  white-space: nowrap;
+  background: #fff;
+  line-height: 25px;
+}
+
+.comment-table-cell .public_fixedDataTableCell_cellContent {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.comment-table-cell .fixedDataTableCellLayout_wrap3 {
+  padding: 0;
+  margin: 0;
+  // line-height: 24px;
+}
+
+.comment-table-header-cell {
+  background: #efefef;
+}
+
+.comment-table-component .fixedDataTableCellGroupLayout_cellGroup {
+  border-bottom: 1px solid #ccc;
+}
+
 .comment-table-component .react-grid-Header {
   background-color: #efefef;
 }

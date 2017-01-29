@@ -1,5 +1,11 @@
-import BooleanColumnFormatter from './BooleanColumnFormatter'
-import TextColumnFormatter from './TextColumnFormatter'
+import React from 'react'
+import DefaultCell from './DefaultCell'
+import BooleanCell from './BooleanCell'
+import TextCell from './TextCell'
+
+const buildCell = Cell => data => (
+  <Cell data={data} />
+)
 
 export default [
   {
@@ -26,7 +32,7 @@ export default [
     key: 'text',
     name: 'Text',
     width: 300,
-    formatter: TextColumnFormatter
+    cell: TextCell
   },
   {
     key: 'likes',
@@ -48,13 +54,13 @@ export default [
     name: 'Edited',
     width: 60,
     resizable: true,
-    formatter: BooleanColumnFormatter
+    cell: BooleanCell
   },
   {
     key: 'hasReplies',
     name: 'Has Replies',
     width: 85,
-    formatter: BooleanColumnFormatter
+    cell: BooleanCell
   },
   {
     key: 'reply_id',
@@ -81,7 +87,7 @@ export default [
     key: 'reply_text',
     name: 'Reply Text',
     width: 300,
-    formatter: TextColumnFormatter
+    cell: TextCell
   },
   {
     key: 'reply_likes',
@@ -103,6 +109,6 @@ export default [
     name: 'Reply Edited',
     width: 60,
     resizable: true,
-    formatter: BooleanColumnFormatter
+    cell: BooleanCell
   }
-].map(c => ({ resizable: true, ...c }))
+].map(c => ({ resizable: true, cell: DefaultCell, ...c }))

@@ -2,28 +2,36 @@
 @import '~normalize.css/normalize';
 @import "~@blueprintjs/core/dist/blueprint.css";
 @import "~@blueprintjs/datetime/dist/blueprint-datetime.css";
-@import "~react-data-grid/dist/react-data-grid.css";
+@import "~fixed-data-table/dist/fixed-data-table-base.min.css";
+@import "~fixed-data-table/dist/fixed-data-table.min.css";
+@import "~fixed-data-table/dist/fixed-data-table-style.min.css";
 
 
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
 html {
-  box-sizing: border-box;
+
+box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+
+margin: 0;
+
+padding: 0;
+
+height: 100%;
 }
 
 .content-container {
-  margin-top: 4rem;
+
+margin-top: 4rem;
 }
 
 *,
 *:before,
 *:after {
-  box-sizing: inherit;
+
+box-sizing: inherit;
 }
