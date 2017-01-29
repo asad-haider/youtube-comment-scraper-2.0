@@ -64,12 +64,22 @@ class CommentTable extends Component {
   }
 
   renderColumn (c) {
+    let width
+    if (!this.state.columnWidths[c.key]) {
+      const col = defaultColumns.find(col => col.key === c.key)
+      if (col) {
+        width = col.width
+      }
+    } else {
+      width = this.state.columnWidths[c.key]
+    }
+
     return (
       <Column
         key={c.key}
         columnKey={c.key}
         header={<HeaderCell>{c.name}</HeaderCell>}
-        width={this.state.columnWidths[c.key]}
+        width={width}
         isResizable={c.resizable}
         cell={<c.cell data={this.props.comments} />} />
     )

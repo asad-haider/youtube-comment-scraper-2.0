@@ -96,11 +96,12 @@ class VideoInfo extends Component {
             &nbsp;Comments
           </p>
 
-          <p className='video-description'>
-            <div
-              className='video-description-html'
-              dangerouslySetInnerHTML={{ __html: videoInfo.get('description') }} />
-          </p>
+          <hr />
+
+          <div
+            className='video-description-html'
+            dangerouslySetInnerHTML={{ __html: videoInfo.get('description') }} />
+
         </Box>
       </Flex>
     )

@@ -39,15 +39,12 @@
   font-size: 10pt;
 }
 
-.video-description {
-  border-top: 1px solid #dedede;
-  padding: 0.5em;
-  position: relative;
-  margin-top: 0.5em;
+.video-info-box hr {
+  margin: 0.3em 0;
+  padding: 0;
 }
 
 .video-description-html {
-  position: absolute;
   width: 100%;
   font-size: 10pt;
   max-height: 6.5em;
