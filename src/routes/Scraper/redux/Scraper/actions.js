@@ -1,11 +1,10 @@
 import fileDownload from 'react-file-download'
-import { pick } from 'lodash'
-import { List } from 'immutable'
 import json2csv from 'json2csv'
 
 import * as types from './action-types'
 import * as socketMessages from './socket-messages'
 import initWebsocket from './websocket'
+import { applyColumnEdits } from './comment-edits'
 
 import * as resultEditorActions from './ResultEditor/actions'
 
@@ -20,7 +19,8 @@ module.exports = {
   resetScraper,
   commentsReceived,
   videoInfoReceived,
-  downloadCsv
+  downloadCsv,
+  downloadJson
 }
 
 function init () {
@@ -157,5 +157,33 @@ function downloadCsvReq () {
 function downloadCsvComplete () {
   return {
     type: types.DOWNLOAD_CSV_COMPLETE
+  }
+}
+
+function downloadJson () {
+  return (dispatch, getState) => {
+    dispatch(downloadJsonReq())
+
+    const { scraper } = getState()
+    const { comments, resultEditor } = scraper.toObject()
+
+    const result = (resultEditor.get('repliesCollapsed'))
+      ? scraper.get('editedComments') // if replies are collapsed, the edited comments contain everytyhing we need
+      : applyColumnEdits(comments, resultEditor)
+
+    fileDownload(JSON.stringify(result.toJS(), null, 2), `${scraper.get('videoId')}.json`)
+    dispatch(downloadJsonComplete())
+  }
+}
+
+function downloadJsonReq () {
+  return {
+    type: types.DOWNLOAD_JSON_REQ
+  }
+}
+
+function downloadJsonComplete () {
+  return {
+    type: types.DOWNLOAD_JSON_COMPLETE
   }
 }

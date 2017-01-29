@@ -94,7 +94,8 @@ class Scraper extends Component {
             filtersToolbar={filtersToolbarIsOpen}
             toggleDataOptionsToolbar={this.toggleDataOptionsToolbar}
             toggleFiltersToolbar={this.toggleFiltersToolbar}
-            downloadCsv={this.props.downloadCsv} />
+            downloadCsv={this.props.downloadCsv}
+            downloadJson={this.props.downloadJson} />
         </Box>
 
         {dataOptionsToolbarIsOpen &&

@@ -23,7 +23,8 @@ class ScraperToolbar extends Component {
     filtersToolbar: PropTypes.boolean,
     toggleDataOptionsToolbar: PropTypes.isRequired,
     toggleFiltersToolbar: PropTypes.func.isRequired,
-    downloadCsv: PropTypes.func.isRequired
+    downloadCsv: PropTypes.func.isRequired,
+    downloadJson: PropTypes.func.isRequired
   }
   defaultProps: {
     loading: true,
@@ -37,6 +38,7 @@ class ScraperToolbar extends Component {
 
     this.renderDownloadMenu = this.renderDownloadMenu.bind(this)
     this.downloadCsv = this.downloadCsv.bind(this)
+    this.downloadJson = this.downloadJson.bind(this)
   }
 
   render () {
@@ -123,7 +125,7 @@ class ScraperToolbar extends Component {
   }
 
   downloadJson () {
-    console.log('Download JSON')
+    this.props.downloadJson()
   }
 }
 
