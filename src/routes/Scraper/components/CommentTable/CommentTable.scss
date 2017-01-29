@@ -11,15 +11,6 @@
   height: 100%;
 }
 
-.comment-table-cell {
-  font-size: 10pt;
-  border-bottom: 1px solid #d3d3d3;
-  padding: 0;
-  white-space: nowrap;
-  background: #fff;
-  line-height: 25px;
-}
-
 .comment-table-cell .public_fixedDataTableCell_cellContent {
   padding-top: 0;
   padding-bottom: 0;
@@ -30,32 +21,4 @@
 .comment-table-cell .fixedDataTableCellLayout_wrap3 {
   padding: 0;
   margin: 0;
-  // line-height: 24px;
-}
-
-.comment-table-header-cell {
-  background: #efefef;
-}
-
-.comment-table-component .fixedDataTableCellGroupLayout_cellGroup {
-  border-bottom: 1px solid #ccc;
-}
-
-.comment-table-component .react-grid-Header {
-  background-color: #efefef;
-}
-
-.comment-table-component .react-grid-HeaderCell {
-  padding-top: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-
-  background-color: #efefef;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #dddddd;
-}
-
-.comment-table-component .react-grid-Row > .react-grid-Cell:nth-child(1) {
-  background: #efefef;
-  text-align: right;
 }

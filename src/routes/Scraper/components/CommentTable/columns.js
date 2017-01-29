@@ -1,11 +1,6 @@
-import React from 'react'
 import DefaultCell from './DefaultCell'
 import BooleanCell from './BooleanCell'
 import TextCell from './TextCell'
-
-const buildCell = Cell => data => (
-  <Cell data={data} />
-)
 
 export default [
   {
@@ -107,7 +102,7 @@ export default [
   {
     key: 'reply_edited',
     name: 'Reply Edited',
-    width: 60,
+    width: 90,
     resizable: true,
     cell: BooleanCell
   }

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { Table, Column, Cell } from 'fixed-data-table'
+import { Table, Column } from 'fixed-data-table'
 import Measure from 'react-measure'
 import { List } from 'immutable'
 
-import HeaderCell from './HeaderCell'
+import HeaderCell, { SortTypes } from './HeaderCell'
 import defaultColumns from './columns'
 import './CommentTable.scss'
 
@@ -18,10 +18,21 @@ class CommentTable extends Component {
     super(props)
     this.renderColumn = this.renderColumn.bind(this)
     this.setDimensions = this.setDimensions.bind(this)
+    this.onColumnResizeEnd = this.onColumnResizeEnd.bind(this)
 
     this.state = {
+      columnWidths: {},
       dimensions: { height: 0, width: 0 }
     }
+  }
+
+  componentDidMount () {
+    // import default column widths
+    const columnWidths = defaultColumns.reduce(
+      (cws, c) => ({ ...cws, [c.key]: c.width }),
+      {})
+
+    this.setState({ columnWidths })
   }
 
   render () {
@@ -39,6 +50,8 @@ class CommentTable extends Component {
             width={width}
             height={height}
             rowsCount={comments.size}
+            onColumnResizeEndCallback={this.onColumnResizeEnd}
+            isColumnResizing={false}
             rowHeight={26}
             headerHeight={30}>
 
@@ -56,10 +69,19 @@ class CommentTable extends Component {
         key={c.key}
         columnKey={c.key}
         header={<HeaderCell>{c.name}</HeaderCell>}
-        width={c.width}
+        width={this.state.columnWidths[c.key]}
         isResizable={c.resizable}
-        cell={c.cell ? <c.cell data={this.props.comments} /> : <TextCell data={this.props.comments} />} />
+        cell={<c.cell data={this.props.comments} />} />
     )
+  }
+
+  onColumnResizeEnd (newColumnWidth, columnKey) {
+    this.setState(({ columnWidths }) => ({
+      columnWidths: {
+        ...columnWidths,
+        [columnKey]: newColumnWidth
+      }
+    }))
   }
 
   setDimensions ({ height, width }) {

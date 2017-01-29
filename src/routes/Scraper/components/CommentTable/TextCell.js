@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Cell } from 'fixed-data-table'
 import { Popover, PopoverInteractionKind, Position } from '@blueprintjs/core'
 
+import './Cell.scss'
 import './TextCell.scss'
 
 const DefaultCell = ({ rowIndex, data, columnKey, ...props }) => {
