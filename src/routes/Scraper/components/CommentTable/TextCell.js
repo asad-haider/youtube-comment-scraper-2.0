@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Cell } from 'fixed-data-table'
 import { Popover, PopoverInteractionKind, Position } from '@blueprintjs/core'
 
@@ -10,9 +10,7 @@ const DefaultCell = ({ rowIndex, data, columnKey, ...props }) => {
 
   const popoverContent = (
     <div className='text-column-popover'>
-      <textarea readOnly>
-        {value}
-      </textarea>
+      <textarea value={value} readOnly />
     </div>
   )
 
