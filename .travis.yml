@@ -21,7 +21,7 @@ script:
 after_success:
   - npm run codecov
   - if [ "$TRAVIS_BRANCH" == "production" ]; then
-    echo "Login as user $DOCKER_USERNAME"
+    echo "Login as user $DOCKER_USERNAME";
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker build -t philbot/youtube-comment-scraper2.0 .;
     docker images;
