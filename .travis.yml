@@ -19,3 +19,9 @@ script:
 
 after_success:
   - npm run codecov
+  - if [ "$TRAVIS_BRANCH" == "production" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker build -t philbot/youtube-comment-scraper2.0 .;
+    docker images;
+    docker push philbot/youtube-comment-scraper2.0;
+    fi
