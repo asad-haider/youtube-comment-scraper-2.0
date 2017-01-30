@@ -7,7 +7,10 @@ export const Header = () => (
     <div className='container'>
       <div className='pt-navbar-group pt-align-left'>
         <IndexLink className='navbar-heading-link' to='/'>
-          <div className='pt-navbar-heading'>YouTube Comment Scraper</div>
+          <div className='pt-navbar-heading'>
+            YouTube Comment Scraper
+          </div>
+          <div style={{ color: '#cc8419', fontSize: '10pt' }}>Version 2 - Alpha Preview</div>
         </IndexLink>
       </div>
       <div className='pt-navbar-group pt-align-right'>
