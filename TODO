@@ -11,3 +11,9 @@ Add 'Reply To' column
 Add a human readable time (GMT)
 
 Add persistent logs to server
+
+Move Progress section underneath toolbar
+
+Add Gradient (light to dark) to toolbar
+
+use #f3f3f3 background instead of #efefef
