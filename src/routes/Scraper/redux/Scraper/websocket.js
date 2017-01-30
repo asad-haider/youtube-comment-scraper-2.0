@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 
 export default () => {
-  const socket = io('http://localhost:3000')
+  const socket = io()
 
   return {
     on: (event, handler) => socket.on(event, handler),
