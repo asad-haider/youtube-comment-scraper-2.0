@@ -88,10 +88,28 @@ if (project.env === 'development') {
     'section in the README for more information on deployment strategies.'
   )
 
+  const compiler = webpack(webpackConfig)
+  const fs = require('fs')
+
   // Serving ~/dist by default. Ideally these files should be served by
   // the web server and not the app server, but this helps to demo the
   // server in production.
   app.use(express.static(project.paths.dist()))
+
+  // This rewrites all routes requests to the root /index.html file
+  // (ignoring file requests). If you want to implement universal
+  // rendering, you'll want to remove this middleware.
+  app.use('*', function (req, res, next) {
+    const filename = path.join(compiler.outputPath, 'index.html')
+    fs.readFile(filename, (err, result) => {
+      if (err) {
+        return next(err)
+      }
+      res.set('content-type', 'text/html')
+      res.send(result)
+      res.end()
+    })
+  })
 }
 
 module.exports = server
