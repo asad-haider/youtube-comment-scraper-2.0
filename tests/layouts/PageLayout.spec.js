@@ -1,7 +1,6 @@
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
-import CoreLayout from 'layouts/CoreLayout/CoreLayout'
-import { shallow } from 'enzyme'
+import PageLayout from 'layouts/PageLayout/PageLayout'
 
 function shallowRender (component) {
   const renderer = TestUtils.createRenderer()
@@ -11,10 +10,10 @@ function shallowRender (component) {
 }
 
 function shallowRenderWithProps (props = {}) {
-  return shallowRender(<CoreLayout {...props} />)
+  return shallowRender(<PageLayout {...props} />)
 }
 
-describe('(Layout) Core', function () {
+describe('(Layout) PageLayout', function () {
   let _component
   let _props
   let _child

@@ -1,7 +1,7 @@
 import React from 'react'
 import './Footer.scss'
 
-const Footer = () => {
+export const Footer = () => {
   const year = (new Date()).getFullYear()
   return (
     <div className='footer container'>
@@ -13,4 +13,4 @@ const Footer = () => {
   )
 }
 
-module.exports = Footer
+export default Footer

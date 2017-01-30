@@ -7,12 +7,12 @@ export default () => ({
     require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
-      const PageNotFound = require('./components/ErrorReport').default
+      const ErrorReport = require('./components/ErrorReport').default
 
       /*  Return getComponent   */
-      cb(null, PageNotFound)
+      cb(null, ErrorReport)
 
     /* Webpack named bundle   */
-  }, 'ErrorReport')
+    }, 'ErrorReport')
   }
 })

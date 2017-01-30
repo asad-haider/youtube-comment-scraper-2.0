@@ -1,6 +1,5 @@
 import React from 'react'
 import { Header } from 'components/Header/Header'
-import { IndexLink, Link } from 'react-router'
 import { shallow } from 'enzyme'
 
 describe('(Component) Header', () => {
@@ -10,27 +9,35 @@ describe('(Component) Header', () => {
     _wrapper = shallow(<Header />)
   })
 
-  it('Renders a welcome message', () => {
-    const welcome = _wrapper.find('h1')
-    expect(welcome).to.exist
-    expect(welcome.text()).to.match(/React Redux Starter Kit/)
+  it('Should render the title', () => {
+    const title = _wrapper.find('.pt-navbar-heading')
+    expect(title).to.exist
+    expect(title.text()).to.match(/YouTube Comment Scraper/i)
   })
 
-  describe('Navigation links...', () => {
-    it('Should render a Link to Home route', () => {
-      expect(_wrapper.contains(
-        <IndexLink activeClassName='route--active' to='/'>
-          Home
-        </IndexLink>
-      )).to.be.true
+  describe('Navigation Buttons...', () => {
+    it('Should render a Link Button to Home route', () => {
+      const homeLink = _wrapper.find('.pt-button.pt-icon-home')
+      expect(homeLink).to.exist
+      expect(homeLink.text()).to.match(/Home/i)
     })
 
-    it('Should render a Link to Counter route', () => {
-      expect(_wrapper.contains(
-        <Link activeClassName='route--active' to='/counter'>
-          Counter
-        </Link>
-      )).to.be.true
+    it('Should render a Link Button to Stats route', () => {
+      const statsLink = _wrapper.find('.pt-button.pt-icon-timeline-bar-chart')
+      expect(statsLink).to.exist
+      expect(statsLink.text()).to.match(/Stats/i)
+    })
+
+    it('Should render a Link Button to Testimonials route', () => {
+      const testimonialsLink = _wrapper.find('.pt-button.pt-icon-comment')
+      expect(testimonialsLink).to.exist
+      expect(testimonialsLink.text()).to.match(/Testimonials/i)
+    })
+
+    it('Should render a Link Button to Code repo', () => {
+      const repoLink = _wrapper.find('.pt-button.pt-icon-code')
+      expect(repoLink).to.exist
+      expect(repoLink.text()).to.match(/Code/i)
     })
   })
 })

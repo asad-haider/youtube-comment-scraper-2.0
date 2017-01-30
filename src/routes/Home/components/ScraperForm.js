@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { Popover, Position } from '@blueprintjs/core'
 import { browserHistory } from 'react-router'
 import './ScraperForm.scss'
 
-class ScraperForm extends Component {
+export class ScraperForm extends Component {
   constructor (props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
@@ -15,44 +15,6 @@ class ScraperForm extends Component {
       videoId: null,
       hasError: false
     }
-  }
-
-  onSubmit (e) {
-    e.preventDefault()
-    const { videoId } = this.state
-
-    if (!videoId) {
-      this.setState({ hasError: true })
-    } else {
-      browserHistory.push(`/scraper/${videoId}`)
-    }
-  }
-
-  onVideoUrlChanged (e) {
-    const videoUrl = e.target.value
-    this.setState({
-      videoId: this.extractVideoID(videoUrl),
-      videoUrl
-    })
-  }
-
-  onCloseFormPopover () {
-    this.setState({ hasError: false })
-  }
-
-  extractVideoID (url) {
-    let videoId
-    const m1 = /(?:http[s]?:\/\/)?(?:www\.)?youtube\.\w{2,3}\/watch\?.*?v=([^&]+)&?/i.exec(url)
-    if (m1 && m1.length === 2) {
-      videoId = m1[1]
-    }
-
-    const m2 = /(?:http[s]?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)\??/i.exec(url)
-    if (!videoId && m2 && m2.length === 2) {
-      videoId = m2[1]
-    }
-
-    return videoId && /^[\w_-]{11}$/.test(videoId) ? videoId : null
   }
 
   render () {
@@ -97,6 +59,44 @@ class ScraperForm extends Component {
       </div>
     )
   }
+
+  onSubmit (e) {
+    e.preventDefault()
+    const { videoId } = this.state
+
+    if (!videoId) {
+      this.setState({ hasError: true })
+    } else {
+      browserHistory.push(`/scraper/${videoId}`)
+    }
+  }
+
+  onVideoUrlChanged (e) {
+    const videoUrl = e.target.value
+    this.setState({
+      videoId: this.extractVideoID(videoUrl),
+      videoUrl
+    })
+  }
+
+  onCloseFormPopover () {
+    this.setState({ hasError: false })
+  }
+
+  extractVideoID (url) {
+    let videoId
+    const m1 = /(?:http[s]?:\/\/)?(?:www\.)?youtube\.\w{2,3}\/watch\?.*?v=([^&]+)&?/i.exec(url)
+    if (m1 && m1.length === 2) {
+      videoId = m1[1]
+    }
+
+    const m2 = /(?:http[s]?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)\??/i.exec(url)
+    if (!videoId && m2 && m2.length === 2) {
+      videoId = m2[1]
+    }
+
+    return videoId && /^[\w_-]{11}$/.test(videoId) ? videoId : null
+  }
 }
 
-module.exports = ScraperForm
+export default ScraperForm
