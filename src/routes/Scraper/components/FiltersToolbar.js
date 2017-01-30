@@ -22,6 +22,7 @@ class FiltersToolbar extends Component {
         <Flex className='scraper-toolbar'>
           <Box>
             <h3>Filters Toolbar</h3>
+            {loading && <em>Loading...</em>}
           </Box>
         </Flex>
       </div>

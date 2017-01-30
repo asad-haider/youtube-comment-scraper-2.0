@@ -78,9 +78,9 @@ class VideoInfo extends Component {
             Published by&nbsp;
             {videoInfo.get('channelId')
               ? <a href={`https://www.youtube.com/channel/${videoInfo.get('channelId')}`}
-                   target='_blank'>
-                 {videoInfo.get('owner')}
-                </a>
+                target='_blank'>
+                {videoInfo.get('owner')}
+              </a>
               : videoInfo.get('owner')}
             &nbsp;on {moment(videoInfo.get('datePublished', 'YYYY-MM-DD')).format('MMM Do YYYY')}
           </p>
@@ -118,10 +118,10 @@ class VideoInfo extends Component {
           <p className='video-info-item pt-skeleton'>Lorem ipsum dolor sit amet</p>
           <p className='video-info-item pt-skeleton'>Lorem ipsum dolor sit amet</p>
           <p className='video-description pt-skeleton'>
-            Lorem ipsum dolor sit amet<br/>
-            Lorem ipsum dolor sit amet<br/>
-            Lorem ipsum dolor sit amet<br/>
-            Lorem ipsum dolor sit amet<br/>
+            Lorem ipsum dolor sit amet<br />
+            Lorem ipsum dolor sit amet<br />
+            Lorem ipsum dolor sit amet<br />
+            Lorem ipsum dolor sit amet<br />
           </p>
         </Box>
       </Flex>

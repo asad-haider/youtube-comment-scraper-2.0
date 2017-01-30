@@ -1,15 +1,12 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { PageNotFound } from 'routes/PageNotFound/components/PageNotFound'
 import { shallow } from 'enzyme'
-import { IndexLink } from 'react-router'
 import { PageLayout } from 'layouts/PageLayout/PageLayout'
 
 describe('(Component) PageNotFound', () => {
-  let _props, _spies, _wrapper
+  let _props, _wrapper
 
   beforeEach(() => {
-    _spies = {}
     _props = {}
     _wrapper = shallow(<PageNotFound {..._props} />)
   })

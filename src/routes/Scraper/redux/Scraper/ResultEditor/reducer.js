@@ -1,7 +1,7 @@
 import * as types from '../action-types'
 import { Map, OrderedMap, fromJS } from 'immutable'
 import prop from 'propper'
-import { pick, keyBy } from 'lodash'
+import { pick } from 'lodash'
 
 import defaultColumns from '../../../components/CommentTable/columns'
 

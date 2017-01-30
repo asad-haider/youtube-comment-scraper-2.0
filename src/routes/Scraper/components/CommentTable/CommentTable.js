@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { Table, Column } from 'fixed-data-table'
 import Measure from 'react-measure'
-import { List } from 'immutable'
 
-import HeaderCell, { SortTypes } from './HeaderCell'
+import HeaderCell from './HeaderCell'
 import defaultColumns from './columns'
 import './CommentTable.scss'
 

@@ -25,7 +25,7 @@ export const HomeView = () => (
             such as username, likes, approximate time and more.
           </p>
         </div>
-          <div className='col-md-3 highlight-container'>
+        <div className='col-md-3 highlight-container'>
           <h1 className='highlight-icon pt-icon-user' />
           <h2 className='highlight-title'>Easy to use</h2>
           <p className='highlight-text pt-running-text'>
@@ -34,14 +34,14 @@ export const HomeView = () => (
             modify your results before exporting them as JSON or CSV (for use with Excel).
           </p>
         </div>
-          <div className='col-md-3 highlight-container'>
+        <div className='col-md-3 highlight-container'>
           <h1 className='highlight-icon pt-icon-heart' />
           <h2 className='highlight-title'>Free & Open</h2>
           <p className='highlight-text pt-running-text'>
             Not just free as in beer, but free as in Freedom! All of the source
             code is licensed under an open-source license and anyone is free to
             use or modify it. Check out the&nbsp;
-            <a href="https://github.com/philbot9/youtube-comment-scraper-2.0" target='_blank'>
+            <a href='https://github.com/philbot9/youtube-comment-scraper-2.0' target='_blank'>
               GitHub repo
             </a>
             &nbsp;to find out more!

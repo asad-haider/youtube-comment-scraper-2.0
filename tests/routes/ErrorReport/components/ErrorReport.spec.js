@@ -1,14 +1,12 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { ErrorReport } from 'routes/ErrorReport/components/ErrorReport'
 import { shallow } from 'enzyme'
 import { PageLayout } from 'layouts/PageLayout/PageLayout'
 
 describe('(Component) ErrorReport', () => {
-  let _props, _spies, _wrapper
+  let _props, _wrapper
 
   beforeEach(() => {
-    _spies = {}
     _props = {}
     _wrapper = shallow(<ErrorReport {..._props} />)
   })
