@@ -8,11 +8,14 @@
     "npm": "^3.0.0"
   },
   "scripts": {
+    "build": "better-npm-run build",
+    "build:prod": "better-npm-run build:prod",
     "clean": "rimraf dist",
     "compile": "better-npm-run compile",
     "lint": "eslint bin build config server src tests",
     "lint:fix": "npm run lint -- --fix",
     "start": "better-npm-run start",
+    "start:prod": "better-npm-run start:prod",
     "dev": "better-npm-run dev",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
@@ -23,6 +26,20 @@
     "codecov": "cat coverage/*/lcov.info | codecov"
   },
   "betterScripts": {
+    "build": {
+      "command": "npm run clean && npm run compile",
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "app:*"
+      }
+    },
+    "build:prod": {
+      "command": "npm run clean && npm run compile",
+      "env": {
+        "NODE_ENV": "production",
+        "DEBUG": "app:*"
+      }
+    },
     "compile": {
       "command": "node bin/compile",
       "env": {
@@ -66,6 +83,13 @@
     "start": {
       "command": "node bin/dev-server",
       "env": {
+        "DEBUG": "app:*"
+      }
+    },
+    "start:prod": {
+      "command": "npm start",
+      "env": {
+        "NODE_ENV": "production",
         "DEBUG": "app:*"
       }
     },

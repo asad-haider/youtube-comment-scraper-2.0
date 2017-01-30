@@ -9,3 +9,5 @@ Add warning for Safari users that download is not going to work
 Add 'Reply To' column
 
 Add a human readable time (GMT)
+
+Add persistent logs to server
