@@ -20,7 +20,7 @@ class ScraperHeader extends Component {
         <Box className='scraper-header-logo-container'>
           <Flex column justify='space-around' align='center'>
             <IndexLink to='/'>
-              <Box><span className='logo pt-icon-comment' /></Box>
+              <Box><span className='logo pt-icon-chat' /></Box>
             </IndexLink>
           </Flex>
         </Box>
