@@ -79,12 +79,6 @@ class Scraper extends Component {
           <ScraperHeader videoInfo={videoInfo} />
         </Box>
 
-        {!progressDismissed &&
-          <Box className='ui-component scrape-progress-container'>
-            <ScrapeProgress {...progress} dismiss={this.dismissProgress} />
-          </Box>
-        }
-
         <Box className='ui-component scraper-toolbar-container'>
           <ScraperToolbar
             operationPending={operationPending}
@@ -112,6 +106,12 @@ class Scraper extends Component {
         {filtersToolbarIsOpen &&
           <Box className='ui-component comment-table-container'>
             <FiltersToolbar loading={loading} />
+          </Box>
+        }
+
+        {!progressDismissed &&
+          <Box className='ui-component scrape-progress-container'>
+            <ScrapeProgress {...progress} dismiss={this.dismissProgress} />
           </Box>
         }
 
