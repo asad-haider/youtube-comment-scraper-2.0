@@ -11,4 +11,4 @@ docker rm youtube-comment-scraper2.0
 
 # Run container
 echo "# Start new container"
-docker run -p 49162:3000 -d --name youtube-comment-scraper2.0 philbot/youtube-comment-scraper2.0
+docker run -p 49162:3000 --restart="always" -d --name youtube-comment-scraper2.0 philbot/youtube-comment-scraper2.0
