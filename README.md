@@ -10,7 +10,7 @@ http://ytcomments2.klostermann.ca
 
 ``` bash
 $ docker build -t philbot/youtube-comment-scraper2.0 .
-$ docker run -p 49162:3000 -d philbot/youtube-comment-scraper2.0
+$ docker run -p 49162:3000 --restart="always" -d philbot/youtube-comment-scraper2.0
 ```
 ### Docker Hub
 
@@ -18,7 +18,7 @@ $ docker run -p 49162:3000 -d philbot/youtube-comment-scraper2.0
 
 ``` bash
 $ docker pull philbot/youtube-comment-scraper2.0
-$ docker run -p 49162:3000 -d philbot/youtube-comment-scraper2.0
+$ docker run -p 49162:3000 --restart="always" -d philbot/youtube-comment-scraper2.0
 ```
 
 ### Continuous Delivery
