@@ -13,7 +13,11 @@ class Scraper extends Component {
   displayName: 'Scraper'
   propTypes: {
     videoId: PropTypes.string.isRequired,
+    comments: PropTypes.object.isRequired,
+    replies: PropTypes.object.isRequired,
+    resultEditor: PropTypes.object.isRequired,
     scraper: PropTypes.object.isRequired,
+    videoInfo: PropTypes.object.isRequired,
     router: PropTypes.obect.isRequired,
     route: PropTypes.string.isRequired
   }
@@ -40,8 +44,8 @@ class Scraper extends Component {
 
     if (this.validateVideoId(videoId)) {
       // console.warn('Halting the scraper for now!')
-      this.props.init()
-      this.props.scrape(videoId)
+      console.log(this.props)
+      this.props.actions.scraper.scrape(videoId)
     } else {
       this.setState({
         error: 'The provided video ID is invalid. Please try again.'
@@ -61,16 +65,15 @@ class Scraper extends Component {
   }
 
   render () {
-    const { scraper } = this.props
-    const { resultEditor, editedComments, comments, videoInfo, complete } = scraper.toObject()
-    const { operationPending } = resultEditor.toObject()
+    const { comments, replies, resultEditor, scraper, videoInfo } = this.props
+    const operationPending = resultEditor.get('operationPending')
     const { progressDismissed, dataOptionsToolbarIsOpen, filtersToolbarIsOpen } = this.state
 
     const loading = Boolean(videoInfo)
     const progress = {
       totalCommentCount: videoInfo ? videoInfo.get('commentCount') : 0,
       commentsScraped: comments.size,
-      complete
+      complete: scraper.get('complete')
     }
 
     return (
@@ -83,7 +86,7 @@ class Scraper extends Component {
           <ScraperToolbar
             operationPending={operationPending}
             loading={loading}
-            complete={complete}
+            complete={scraper.get('complete')}
             dataOptionsToolbar={dataOptionsToolbarIsOpen}
             filtersToolbar={filtersToolbarIsOpen}
             toggleDataOptionsToolbar={this.toggleDataOptionsToolbar}
@@ -116,7 +119,7 @@ class Scraper extends Component {
         }
 
         <Box className='ui-component comment-table-container' auto>
-          <CommentTable resultEditor={resultEditor} comments={editedComments} />
+          <CommentTable resultEditor={resultEditor} comments={comments} />
         </Box>
       </Flex>
     )

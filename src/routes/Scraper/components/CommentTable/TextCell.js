@@ -1,12 +1,13 @@
 import React from 'react'
 import { Cell } from 'fixed-data-table'
 import { Popover, PopoverInteractionKind, Position } from '@blueprintjs/core'
+import resolveCellValue from './resolve-cell-value'
 
 import './Cell.scss'
 import './TextCell.scss'
 
 const DefaultCell = ({ rowIndex, data, columnKey, ...props }) => {
-  const value = data.get(rowIndex).get(columnKey)
+  const value = resolveCellValue({ data, rowIndex, columnKey })
 
   const popoverContent = (
     <div className='text-column-popover'>

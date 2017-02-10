@@ -1,11 +1,11 @@
-import * as types from '../action-types'
+import * as types from './action-types'
 
 export function toggleColumn (key) {
   return (dispatch) => {
     dispatch(toggleColumnReq(key))
 
     setTimeout(() =>
-      dispatch(toggleColumnDelayed(key)), 10)
+      dispatch(toggleColumnDelayed(key)), 50)
   }
 }
 
@@ -28,7 +28,7 @@ export function setIncludeReplies (includeReplies) {
     dispatch(setIncludeRepliesReq(includeReplies))
 
     setTimeout(() =>
-      dispatch(setIncludeRepliesDelayed(includeReplies)), 10)
+      dispatch(setIncludeRepliesDelayed(includeReplies)), 50)
   }
 }
 
@@ -51,7 +51,7 @@ export function setRepliesCollapsed (repliesCollapsed) {
     dispatch(setRepliesCollapsedReq(repliesCollapsed))
 
     setTimeout(() =>
-      dispatch(setRepliesCollapsedDelayed(repliesCollapsed)), 10)
+      dispatch(setRepliesCollapsedDelayed(repliesCollapsed)), 50)
   }
 }
 

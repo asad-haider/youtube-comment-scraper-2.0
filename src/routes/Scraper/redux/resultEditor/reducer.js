@@ -1,9 +1,9 @@
-import * as types from '../action-types'
-import { Map, OrderedMap, fromJS } from 'immutable'
+import types from '../action-types'
+import { Map, List, OrderedMap, fromJS } from 'immutable'
 import prop from 'propper'
 import { pick } from 'lodash'
 
-import defaultColumns from '../../../components/CommentTable/columns'
+import defaultColumns from '../../components/CommentTable/columns'
 
 const importDefaultColumns = () =>
   defaultColumns.reduce((m, c) => {
@@ -13,43 +13,49 @@ const importDefaultColumns = () =>
 
 const initialState = Map({
   operationPending: false,
-  columns: importDefaultColumns(),
   includeReplies: true,
-  repliesCollapsed: false
+  repliesCollapsed: false,
+  columns: importDefaultColumns(),
+  rows: List()
 })
 
 export default function resultEditorReducer (state = initialState, action) {
   switch (action.type) {
-    case types.TOGGLE_COLUMN_REQ:
+    case types.comments.COMMENTS_ADDED:
+      return state
+        .update('rows', rs =>
+          rs.concat(List(action.payload.comments.map(c => c.id))))
+
+    case types.resultEditor.TOGGLE_COLUMN_REQ:
       return state
         .updateIn(['columns', action.payload.key], col =>
           col.set('active', !col.get('active')))
         .set('operationPending', true)
 
-    case types.TOGGLE_COLUMN:
+    case types.resultEditor.TOGGLE_COLUMN:
       return state
         .updateIn(['columns', action.payload.key], col =>
           col.set('display', !col.get('display')))
         .set('operationPending', false)
 
-    case types.SET_INCLUDE_REPLIES_REQ:
+    case types.resultEditor.SET_INCLUDE_REPLIES_REQ:
       return state
         .set('includeReplies', prop(action, 'payload.includeReplies'))
         .set('operationPending', true)
 
-    case types.SET_INCLUDE_REPLIES:
+    case types.resultEditor.SET_INCLUDE_REPLIES:
       return setReplyColumns(
         state
           .set('includeReplies', prop(action, 'payload.includeReplies'))
           .set('operationPending', false),
         prop(action, 'payload.includeReplies'))
 
-    case types.SET_REPLIES_COLLAPSED_REQ:
+    case types.resultEditor.SET_REPLIES_COLLAPSED_REQ:
       return state
         .set('repliesCollapsed', prop(action, 'payload.repliesCollapsed'))
         .set('operationPending', true)
 
-    case types.SET_REPLIES_COLLAPSED:
+    case types.resultEditor.SET_REPLIES_COLLAPSED:
       return setReplyColumns(
         state
           .set('repliesCollapsed', prop(action, 'payload.repliesCollapsed'))

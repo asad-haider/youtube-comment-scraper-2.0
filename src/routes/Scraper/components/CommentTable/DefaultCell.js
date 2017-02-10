@@ -1,12 +1,13 @@
 import React from 'react'
 import { Cell } from 'fixed-data-table'
+import resolveCellValue from './resolve-cell-value'
 
 import './Cell.scss'
 
-const DefaultCeall = ({ rowIndex, data, columnKey, ...props }) => (
+const DefaultCell = ({ rowIndex, data, columnKey, ...props }) => (
   <Cell {...props} className='comment-table-cell'>
-    {data.get(rowIndex).get(columnKey)}
+    {resolveCellValue({ data, rowIndex, columnKey })}
   </Cell>
 )
 
-export default DefaultCeall
+export default DefaultCell

@@ -11,8 +11,20 @@ export default (store) => ({
           dependencies for bundling   */
       const ScraperContainer = require('./containers/ScraperContainer').default
 
-      const scraperReducer = require('./redux/Scraper').default
+      const commentsReducer = require('./redux/comments').default
+      injectReducer(store, { key: 'comments', reducer: commentsReducer })
+
+      const repliesReducer = require('./redux/replies').default
+      injectReducer(store, { key: 'replies', reducer: repliesReducer })
+
+      const resultEditorReducer = require('./redux/resultEditor').default
+      injectReducer(store, { key: 'resultEditor', reducer: resultEditorReducer })
+
+      const scraperReducer = require('./redux/scraper').default
       injectReducer(store, { key: 'scraper', reducer: scraperReducer })
+
+      const videoInfoReducer = require('./redux/videoInfo').default
+      injectReducer(store, { key: 'videoInfo', reducer: videoInfoReducer })
 
       /*  Return getComponent   */
       cb(null, ScraperContainer)

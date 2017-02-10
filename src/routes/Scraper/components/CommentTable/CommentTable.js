@@ -73,6 +73,9 @@ class CommentTable extends Component {
       width = this.state.columnWidths[c.key]
     }
 
+    const { comments, resultEditor } = this.props
+    const rows = resultEditor.get('rows')
+
     return (
       <Column
         key={c.key}
@@ -80,7 +83,7 @@ class CommentTable extends Component {
         header={<HeaderCell>{c.name}</HeaderCell>}
         width={width}
         isResizable={c.resizable}
-        cell={<c.cell data={this.props.comments} />} />
+        cell={<c.cell data={{ comments, rows }} />} />
     )
   }
 
