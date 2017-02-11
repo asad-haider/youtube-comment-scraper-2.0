@@ -10,6 +10,7 @@ class CommentTable extends Component {
   displayName: 'CommentTable'
   propTypes: {
     comments: PropTypes.object.isRequired,
+    replies: PropTypes.object.isRequired,
     resultEditor: PropTypes.object.isRequired
   }
 
@@ -36,19 +37,20 @@ class CommentTable extends Component {
 
   render () {
     const { height, width } = this.state.dimensions
-    const { comments, resultEditor } = this.props
+    const { resultEditor } = this.props
+    const rows = resultEditor.get('rows')
 
     const activeColumns = defaultColumns
       .filter(c => resultEditor.getIn(['columns', c.key, 'display']))
 
     return (
-      <Measure whitelist={['height']} onMeasure={this.setDimensions}>
+      <Measure whitelist={['height', 'width']} onMeasure={this.setDimensions}>
         <div className='comment-table-wrapper'>
           <Table
             id='comment-table'
             width={width}
             height={height}
-            rowsCount={comments.size}
+            rowsCount={rows.size}
             onColumnResizeEndCallback={this.onColumnResizeEnd}
             isColumnResizing={false}
             rowHeight={26}
@@ -73,8 +75,8 @@ class CommentTable extends Component {
       width = this.state.columnWidths[c.key]
     }
 
-    const { comments, resultEditor } = this.props
-    const rows = resultEditor.get('rows')
+    const { comments, replies, resultEditor } = this.props
+    const { rows, repliesCollapsed } = resultEditor.toObject()
 
     return (
       <Column
@@ -83,7 +85,7 @@ class CommentTable extends Component {
         header={<HeaderCell>{c.name}</HeaderCell>}
         width={width}
         isResizable={c.resizable}
-        cell={<c.cell data={{ comments, rows }} />} />
+        cell={<c.cell data={{ comments, replies, rows, repliesCollapsed }} />} />
     )
   }
 

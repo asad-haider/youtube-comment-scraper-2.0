@@ -1,3 +1,4 @@
+import { List, Map } from 'immutable'
 import * as types from './action-types'
 
 export function toggleColumn (key) {
@@ -24,11 +25,32 @@ export function toggleColumnDelayed (key) {
 }
 
 export function setIncludeReplies (includeReplies) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(setIncludeRepliesReq(includeReplies))
 
-    setTimeout(() =>
-      dispatch(setIncludeRepliesDelayed(includeReplies)), 50)
+    setTimeout(() => {
+      const rows = updateRows(getState(), { includeReplies })
+      dispatch(setIncludeRepliesDelayed(includeReplies, rows))
+    }, 50)
+  }
+}
+
+function updateRows (state, override = {}) {
+  const { resultEditor, comments } = state
+
+  const includeReplies = override.includeReplies == null
+    ? resultEditor.get('includeReplies')
+    : override.includeReplies
+
+  if (!includeReplies) {
+    return comments.toList().map(c => Map({ commentId: c.get('id') }))
+  } else {
+    return comments.reduce((cs, c) =>
+      cs.concat(List.of(Map({ commentId: c.get('id') })))
+        .concat(c.get('hasReplies')
+          ? c.get('replies').map(rId => Map({ replyId: rId }))
+          : List()),
+      List())
   }
 }
 
@@ -39,19 +61,20 @@ export function setIncludeRepliesReq (includeReplies) {
   }
 }
 
-export function setIncludeRepliesDelayed (includeReplies) {
+export function setIncludeRepliesDelayed (includeReplies, rows) {
   return {
     type: types.SET_INCLUDE_REPLIES,
-    payload: { includeReplies }
+    payload: { includeReplies, rows }
   }
 }
 
 export function setRepliesCollapsed (repliesCollapsed) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(setRepliesCollapsedReq(repliesCollapsed))
 
-    setTimeout(() =>
-      dispatch(setRepliesCollapsedDelayed(repliesCollapsed)), 50)
+    setTimeout(() => {
+      dispatch(setRepliesCollapsedDelayed(repliesCollapsed))
+    }, 50)
   }
 }
 

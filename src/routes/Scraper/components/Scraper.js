@@ -44,7 +44,6 @@ class Scraper extends Component {
 
     if (this.validateVideoId(videoId)) {
       // console.warn('Halting the scraper for now!')
-      console.log(this.props)
       this.props.actions.scraper.scrape(videoId)
     } else {
       this.setState({
@@ -59,14 +58,13 @@ class Scraper extends Component {
   }
 
   componentWillUnmount () {
-    this.props.resetScraper()
+    this.props.actions.scraper.resetScraper()
     this.state.removeRouteLeaveHook()
     window.removeEventListener('beforeunload', this.confirmUnload)
   }
 
   render () {
-    const { comments, replies, resultEditor, scraper, videoInfo } = this.props
-    const operationPending = resultEditor.get('operationPending')
+    const { comments, replies, resultEditor, scraper, videoInfo, actions } = this.props
     const { progressDismissed, dataOptionsToolbarIsOpen, filtersToolbarIsOpen } = this.state
 
     const loading = Boolean(videoInfo)
@@ -84,15 +82,15 @@ class Scraper extends Component {
 
         <Box className='ui-component scraper-toolbar-container'>
           <ScraperToolbar
-            operationPending={operationPending}
+            operationPending={resultEditor.get('operationPending')}
             loading={loading}
             complete={scraper.get('complete')}
             dataOptionsToolbar={dataOptionsToolbarIsOpen}
             filtersToolbar={filtersToolbarIsOpen}
             toggleDataOptionsToolbar={this.toggleDataOptionsToolbar}
             toggleFiltersToolbar={this.toggleFiltersToolbar}
-            downloadCsv={this.props.downloadCsv}
-            downloadJson={this.props.downloadJson} />
+            downloadCsv={actions.scraper.downloadCsv}
+            downloadJson={actions.scraper.downloadJson} />
         </Box>
 
         {dataOptionsToolbarIsOpen &&
@@ -100,9 +98,9 @@ class Scraper extends Component {
             <DataToolbar
               loading={loading}
               resultEditor={resultEditor}
-              toggleColumn={this.props.toggleColumn}
-              setIncludeReplies={this.props.setIncludeReplies}
-              setRepliesCollapsed={this.props.setRepliesCollapsed} />
+              toggleColumn={actions.resultEditor.toggleColumn}
+              setIncludeReplies={actions.resultEditor.setIncludeReplies}
+              setRepliesCollapsed={actions.resultEditor.setRepliesCollapsed} />
           </Box>
         }
 
@@ -119,7 +117,10 @@ class Scraper extends Component {
         }
 
         <Box className='ui-component comment-table-container' auto>
-          <CommentTable resultEditor={resultEditor} comments={comments} />
+          <CommentTable
+            comments={comments}
+            replies={replies}
+            resultEditor={resultEditor} />
         </Box>
       </Flex>
     )

@@ -1,6 +1,6 @@
 import * as types from './action-types'
 import prop from 'propper'
-import { fromJS, Map } from 'immutable'
+import { Map } from 'immutable'
 
 const initialState = Map({
   socket: null,
