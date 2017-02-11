@@ -3,6 +3,7 @@ import { Map, List, OrderedMap, fromJS } from 'immutable'
 import prop from 'propper'
 import { pick } from 'lodash'
 
+import updateRows from './update-rows'
 import defaultColumns from '../../components/CommentTable/columns'
 
 const importDefaultColumns = () =>
@@ -23,12 +24,13 @@ export default function resultEditorReducer (state = initialState, action) {
   switch (action.type) {
     case types.comments.COMMENTS_ADDED:
       return state.update('rows', rs =>
-        rs.concat(List(
-          action.payload.comments.reduce((rows, c) => {
-            return c.hasReplies
-              ? rows.concat(List.of(Map({ commentId: c.id })).concat(List(c.replies.map(r => Map({ replyId: r.id })))))
-              : rows.concat(List.of(Map({ commentId: c.id })))
-          }, List()))))
+        rs.concat(updateRows({
+          resultEditor: state,
+          comments: fromJS(action.payload.comments)
+            .map(c => c.get('hasReplies')
+              ? c.set('replies', c.get('replies').map(r => r.get('id')))
+              : c)
+        })))
 
     case types.resultEditor.TOGGLE_COLUMN_REQ:
       return state
