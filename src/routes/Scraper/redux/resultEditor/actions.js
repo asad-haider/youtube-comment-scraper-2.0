@@ -73,3 +73,10 @@ export function setRepliesCollapsedDelayed (repliesCollapsed) {
     payload: { repliesCollapsed }
   }
 }
+
+export function setColumnSortDir (key, sortDir) {
+  return {
+    type: types.SET_COLUMN_SORT_DIR,
+    payload: { key, sortDir }
+  }
+}

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Table, Column } from 'fixed-data-table'
 import Measure from 'react-measure'
 
-import HeaderCell from './HeaderCell'
+import SortHeaderCell from './SortHeaderCell'
 import defaultColumns from './columns'
 import './CommentTable.scss'
 
@@ -78,11 +78,19 @@ class CommentTable extends Component {
     const { comments, replies, resultEditor } = this.props
     const { rows, repliesCollapsed } = resultEditor.toObject()
 
+    const header = (
+      <SortHeaderCell
+        onSortChange={this.props.setColumnSortDir}
+        sortDir={resultEditor.getIn(['columnSortDir', c.key])}>
+        {c.name}
+      </SortHeaderCell>
+    )
+
     return (
       <Column
         key={c.key}
         columnKey={c.key}
-        header={<HeaderCell>{c.name}</HeaderCell>}
+        header={header}
         width={width}
         isResizable={c.resizable}
         cell={<c.cell data={{ comments, replies, rows, repliesCollapsed }} />} />
@@ -102,6 +110,10 @@ class CommentTable extends Component {
     this.setState({
       dimensions: { height, width }
     })
+  }
+
+  onSortColumnChange (columnKey, nextSortDir) {
+    this.props.actions.resultEditor.setColumnSortDir(columnKey, nextSortDir)
   }
 }
 

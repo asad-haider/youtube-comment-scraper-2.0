@@ -17,6 +17,7 @@ const initialState = Map({
   includeReplies: true,
   repliesCollapsed: false,
   columns: importDefaultColumns(),
+  columnSortDir: Map(),
   rows: List()
 })
 
@@ -72,6 +73,11 @@ export default function resultEditorReducer (state = initialState, action) {
           operationPending: false
         }),
         !prop(action, 'payload.repliesCollapsed'))
+
+    case types.resultEditor.SET_COLUMN_SORT_DIR:
+      return state.set('columnSortDir', Map({
+        [prop(action, 'payload.key')]: prop(action, 'payload.sortDir')
+      }))
 
     default:
       return state

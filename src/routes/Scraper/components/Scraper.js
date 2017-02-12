@@ -120,7 +120,8 @@ class Scraper extends Component {
           <CommentTable
             comments={comments}
             replies={replies}
-            resultEditor={resultEditor} />
+            resultEditor={resultEditor}
+            setColumnSortDir={actions.resultEditor.setColumnSortDir} />
         </Box>
       </Flex>
     )
