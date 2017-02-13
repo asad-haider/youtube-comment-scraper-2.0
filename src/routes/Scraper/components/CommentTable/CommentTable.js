@@ -82,14 +82,12 @@ class CommentTable extends Component {
     const { comments, replies, resultEditor } = this.props
     const { rows, repliesCollapsed } = resultEditor.toObject()
 
-    const header = (c.id === 'index')
-      ? (<Cell/>)
-      : (
-        <SortHeaderCell
-          onSortChange={this.props.setColumnSortDir}
-          sortDir={resultEditor.getIn(['columnSortDir', c.key])}>
-          {c.name}
-        </SortHeaderCell>
+    const header = (
+      <SortHeaderCell
+        onSortChange={this.props.setColumnSortDir}
+        sortDir={resultEditor.getIn(['columnSortDir', c.key])}>
+        {c.name}
+      </SortHeaderCell>
       )
 
     return (

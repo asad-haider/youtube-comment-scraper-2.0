@@ -1,7 +1,6 @@
 import DefaultCell from './DefaultCell'
 import BooleanCell from './BooleanCell'
 import TextCell from './TextCell'
-import IndexCell from './IndexCell'
 
 export default [
   {
