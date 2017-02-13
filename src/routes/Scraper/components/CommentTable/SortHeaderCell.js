@@ -3,6 +3,8 @@ import HeaderCell from './HeaderCell'
 import omit from 'lodash/omit'
 import { SortDir } from '../../redux/resultEditor'
 
+import './SortHeaderCell.scss'
+
 class SortHeaderCell extends Component {
   propTypes: {
     sortDir: PropTypes.string,
@@ -17,10 +19,13 @@ class SortHeaderCell extends Component {
   render () {
     var { sortDir, children, ...props } = this.props
     return (
-      <HeaderCell {...omit(props, 'onSortChange')}>
-        <a onClick={this.onSortChange}>
-          {children} {this.getSortDirIcon(sortDir)}
-        </a>
+      <HeaderCell
+        {...omit(props, 'onSortChange')}
+        className='sort-header-cell'
+        onClick={this.onSortChange}>
+
+        {this.getSortDirIcon(sortDir)} {children}
+
       </HeaderCell>
     )
   }
