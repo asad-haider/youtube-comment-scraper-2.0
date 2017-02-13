@@ -3,6 +3,8 @@ import { Table, Column } from 'fixed-data-table'
 import Measure from 'react-measure'
 
 import SortHeaderCell from './SortHeaderCell'
+import HeaderCell from './HeaderCell'
+import IndexCell, { defaultWidth as indexColDefaultWidth } from './IndexCell'
 import defaultColumns from './columns'
 import './CommentTable.scss'
 
@@ -17,6 +19,7 @@ class CommentTable extends Component {
   constructor (props) {
     super(props)
     this.renderColumn = this.renderColumn.bind(this)
+    this.renderIndexColumn = this.renderIndexColumn.bind(this)
     this.setDimensions = this.setDimensions.bind(this)
     this.onColumnResizeEnd = this.onColumnResizeEnd.bind(this)
 
@@ -30,7 +33,7 @@ class CommentTable extends Component {
     // import default column widths
     const columnWidths = defaultColumns.reduce(
       (cws, c) => ({ ...cws, [c.key]: c.width }),
-      {})
+      { indexCol: indexColDefaultWidth })
 
     this.setState({ columnWidths })
   }
@@ -56,6 +59,7 @@ class CommentTable extends Component {
             rowHeight={26}
             headerHeight={30}>
 
+            {this.renderIndexColumn()}
             {activeColumns.map(this.renderColumn)}
 
           </Table>
@@ -78,22 +82,40 @@ class CommentTable extends Component {
     const { comments, replies, resultEditor } = this.props
     const { rows, repliesCollapsed } = resultEditor.toObject()
 
-    const header = (
-      <SortHeaderCell
-        onSortChange={this.props.setColumnSortDir}
-        sortDir={resultEditor.getIn(['columnSortDir', c.key])}>
-        {c.name}
-      </SortHeaderCell>
-    )
+    const header = (c.id === 'index')
+      ? (<Cell/>)
+      : (
+        <SortHeaderCell
+          onSortChange={this.props.setColumnSortDir}
+          sortDir={resultEditor.getIn(['columnSortDir', c.key])}>
+          {c.name}
+        </SortHeaderCell>
+      )
 
     return (
       <Column
+        fixed={c.fixed}
         key={c.key}
         columnKey={c.key}
         header={header}
         width={width}
         isResizable={c.resizable}
         cell={<c.cell data={{ comments, replies, rows, repliesCollapsed }} />} />
+    )
+  }
+
+  renderIndexColumn () {
+    const indexCol = this.state.columnWidths.indexCol
+    const width = indexCol || indexColDefaultWidth
+    return (
+      <Column
+        key='indexCol'
+        columnKey='indexCol'
+        header={<HeaderCell />}
+        width={width}
+        cell={<IndexCell />}
+        isResizable
+        fixed />
     )
   }
 
