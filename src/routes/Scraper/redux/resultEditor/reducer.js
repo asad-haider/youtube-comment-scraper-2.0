@@ -3,7 +3,7 @@ import { Map, List, OrderedMap, fromJS } from 'immutable'
 import prop from 'propper'
 import { pick } from 'lodash'
 
-import updateRows from './update-rows'
+import applyReplyOptions from './apply-reply-options'
 import defaultColumns from '../../components/CommentTable/columns'
 
 const importDefaultColumns = () =>
@@ -17,22 +17,11 @@ const initialState = Map({
   includeReplies: true,
   repliesCollapsed: false,
   columns: importDefaultColumns(),
-  columnSortDir: Map(),
-  rows: List()
+  columnSortDir: Map()
 })
 
 export default function resultEditorReducer (state = initialState, action) {
   switch (action.type) {
-    case types.comments.COMMENTS_ADDED:
-      return state.update('rows', rs =>
-        rs.concat(updateRows({
-          resultEditor: state,
-          comments: fromJS(action.payload.comments)
-            .map(c => c.get('hasReplies')
-              ? c.set('replies', c.get('replies').map(r => r.get('id')))
-              : c)
-        })))
-
     case types.resultEditor.TOGGLE_COLUMN_REQ:
       return state
         .updateIn(['columns', action.payload.key], col =>
@@ -46,37 +35,36 @@ export default function resultEditorReducer (state = initialState, action) {
         .set('operationPending', false)
 
     case types.resultEditor.SET_INCLUDE_REPLIES_REQ:
-      return state.merge({
-        includeReplies: prop(action, 'payload.includeReplies'),
-        operationPending: true
-      })
+      return state.set('operationPending', true)
 
     case types.resultEditor.SET_INCLUDE_REPLIES:
       return setReplyColumns(
         state.merge({
           includeReplies: prop(action, 'payload.includeReplies'),
-          operationPending: false,
-          rows: prop(action, 'payload.rows')
+          operationPending: false
         }),
         prop(action, 'payload.includeReplies'))
 
     case types.resultEditor.SET_REPLIES_COLLAPSED_REQ:
-      return state.merge({
-        repliesCollapsed: prop(action, 'payload.repliesCollapsed'),
-        operationPending: true
-      })
+      return state.set('operationPending', true)
 
     case types.resultEditor.SET_REPLIES_COLLAPSED:
       return setReplyColumns(
-        state.merge({
+        state.merge(fromJS({
           repliesCollapsed: prop(action, 'payload.repliesCollapsed'),
           operationPending: false
-        }),
+        })),
         !prop(action, 'payload.repliesCollapsed'))
 
+    case types.resultEditor.SET_COLUMN_SORT_DIR_REQ:
+      return state.set('operationPending', true)
+
     case types.resultEditor.SET_COLUMN_SORT_DIR:
-      return state.set('columnSortDir', Map({
-        [prop(action, 'payload.key')]: prop(action, 'payload.sortDir')
+      return state.merge(fromJS({
+        columnSortDir: {
+          [prop(action, 'payload.key')]: prop(action, 'payload.sortDir')
+        },
+        operationPending: false
       }))
 
     default:

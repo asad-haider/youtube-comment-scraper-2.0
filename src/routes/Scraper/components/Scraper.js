@@ -19,7 +19,8 @@ class Scraper extends Component {
     scraper: PropTypes.object.isRequired,
     videoInfo: PropTypes.object.isRequired,
     router: PropTypes.obect.isRequired,
-    route: PropTypes.string.isRequired
+    route: PropTypes.string.isRequired,
+    rows: PropTypes.object.isRequired
   }
 
   constructor (props) {
@@ -64,7 +65,7 @@ class Scraper extends Component {
   }
 
   render () {
-    const { comments, replies, resultEditor, scraper, videoInfo, actions } = this.props
+    const { comments, rows, replies, resultEditor, scraper, videoInfo, actions } = this.props
     const { progressDismissed, dataOptionsToolbarIsOpen, filtersToolbarIsOpen } = this.state
 
     const loading = Boolean(videoInfo)
@@ -118,7 +119,7 @@ class Scraper extends Component {
 
         <Box className='ui-component comment-table-container' auto>
           <CommentTable
-            comments={comments}
+            rows={rows}
             replies={replies}
             resultEditor={resultEditor}
             setColumnSortDir={actions.resultEditor.setColumnSortDir} />

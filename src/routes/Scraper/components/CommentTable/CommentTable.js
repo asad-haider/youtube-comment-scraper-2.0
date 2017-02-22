@@ -6,6 +6,7 @@ import SortHeaderCell from './SortHeaderCell'
 import HeaderCell from './HeaderCell'
 import IndexCell, { defaultWidth as indexColDefaultWidth } from './IndexCell'
 import defaultColumns from './columns'
+
 import './CommentTable.scss'
 
 class CommentTable extends Component {
@@ -13,7 +14,8 @@ class CommentTable extends Component {
   propTypes: {
     comments: PropTypes.object.isRequired,
     replies: PropTypes.object.isRequired,
-    resultEditor: PropTypes.object.isRequired
+    resultEditor: PropTypes.object.isRequired,
+    rows: PropTypes.object.isRequired
   }
 
   constructor (props) {
@@ -38,10 +40,15 @@ class CommentTable extends Component {
     this.setState({ columnWidths })
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (this.props.comments !== nextProps.comments) {
+
+    }
+  }
+
   render () {
     const { height, width } = this.state.dimensions
-    const { resultEditor } = this.props
-    const rows = resultEditor.get('rows')
+    const { resultEditor, rows } = this.props
 
     const activeColumns = defaultColumns
       .filter(c => resultEditor.getIn(['columns', c.key, 'display']))
@@ -79,8 +86,7 @@ class CommentTable extends Component {
       width = this.state.columnWidths[c.key]
     }
 
-    const { comments, replies, resultEditor } = this.props
-    const { rows, repliesCollapsed } = resultEditor.toObject()
+    const { rows, resultEditor } = this.props
 
     const header = (
       <SortHeaderCell
@@ -98,7 +104,7 @@ class CommentTable extends Component {
         header={header}
         width={width}
         isResizable={c.resizable}
-        cell={<c.cell data={{ comments, replies, rows, repliesCollapsed }} />} />
+        cell={<c.cell data={{ rows }} />} />
     )
   }
 

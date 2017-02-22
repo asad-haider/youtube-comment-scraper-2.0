@@ -1,5 +1,6 @@
 import * as types from './action-types'
-import updateRows from './update-rows'
+import applyReplyOptions from './apply-reply-options'
+import sortRows from './sort-rows'
 
 export function toggleColumn (key) {
   return (dispatch) => {
@@ -30,7 +31,7 @@ export function setIncludeReplies (includeReplies) {
     const { resultEditor, comments } = getState()
 
     setTimeout(() => {
-      const rows = updateRows({ resultEditor, comments: comments.toList() }, { includeReplies })
+      const rows = applyReplyOptions({ resultEditor, comments: comments.toList() }, { includeReplies })
       dispatch(setIncludeRepliesDelayed(includeReplies, rows))
     }, 50)
   }
@@ -74,9 +75,56 @@ export function setRepliesCollapsedDelayed (repliesCollapsed) {
   }
 }
 
+function populateRows (rows, comments, replies) {
+  return rows
+    .map(r =>
+      r.get('commentId')
+        ? comments.get(r.get('commentId'))
+        : r.get('replyId')
+          ? replies.get(r.get('replyId'))
+          : null)
+    .filter(Boolean)
+}
+
 export function setColumnSortDir (key, sortDir) {
+  return (dispatch, getState) => {
+    dispatch(setColumnSortDirReq(key, sortDir))
+
+    setTimeout(() => {
+      const { resultEditor, comments, replies } = getState()
+      const originalRows = applyReplyOptions(resultEditor.get('originalRows'), resultEditor)
+      const originalComments = populateRows( )
+      const rows = applyReplyOptions({ resultEditor })
+      const repliesCollapsed = resultEditor.get('repliesCollapsed')
+
+      if (!sortDir) {
+        return dispatch(setColumnSortDirDelayed(key, sortDir, rows))
+      }
+
+      const sortedRows = sortRows({
+        rows: originalRows,
+        sortKey: key,
+        comments,
+        replies,
+        repliesCollapsed,
+        sortDir
+      })
+
+      dispatch(setColumnSortDirDelayed(key, sortDir, rows: sortedRows))
+    }, 50)
+  }
+}
+
+export function setColumnSortDirReq (key, sortDir) {
+  return {
+    type: types.SET_COLUMN_SORT_DIR_REQ,
+    payload: { key, sortDir }
+  }
+}
+
+export function setColumnSortDirDelayed (key, sortDir, rows) {
   return {
     type: types.SET_COLUMN_SORT_DIR,
-    payload: { key, sortDir }
+    payload: { key, sortDir, rows }
   }
 }

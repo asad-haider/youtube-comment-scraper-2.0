@@ -1,6 +1,6 @@
 import { List, Map } from 'immutable'
 
-export default function updateRows ({ resultEditor, comments }, override = {}) {
+export default function applyReplyOptions ({ resultEditor, comments }, override = {}) {
   const includeReplies = override.includeReplies == null
     ? resultEditor.get('includeReplies')
     : override.includeReplies

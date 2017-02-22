@@ -1,9 +1,10 @@
 .scraper-toolbar-component {
   padding: 0.2em;
-  background: #f8f8f8;
-  background: -moz-linear-gradient(top,  #f8f8f8 0%, #f3f3f3 100%);
-  background: -webkit-linear-gradient(top,  #f8f8f8 0%,#f3f3f3 100%);
-  background: linear-gradient(to bottom,  #f8f8f8 0%,#f3f3f3 100%);
+  background: #fff;
+  // background: #f8f8f8;
+  // background: -moz-linear-gradient(top,  #f8f8f8 0%, #f3f3f3 100%);
+  // background: -webkit-linear-gradient(top,  #f8f8f8 0%,#f3f3f3 100%);
+  // background: linear-gradient(to bottom,  #f8f8f8 0%,#f3f3f3 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#f3f3f3',GradientType=0 );
 }
 

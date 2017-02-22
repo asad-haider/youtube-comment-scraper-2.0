@@ -17,6 +17,7 @@
     "start": "better-npm-run start",
     "start:prod": "better-npm-run start:prod",
     "dev": "better-npm-run dev",
+    "source-map-explorer": "better-npm-run source-map-explorer",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
     "deploy": "better-npm-run deploy",
@@ -79,6 +80,9 @@
         "NODE_ENV": "production",
         "DEBUG": "app:*"
       }
+    },
+    "source-map-explorer": {
+      "command": "npm run deploy:prod && source-map-explorer dist/bundle.js dist/bundle.js.map"
     },
     "start": {
       "command": "node bin/dev-server",
@@ -189,6 +193,7 @@
     "redbox-react": "^1.2.10",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
+    "source-map-explorer": "^1.3.3",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.2"
   }
