@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import HeaderCell from './HeaderCell'
 import omit from 'lodash/omit'
-import { SortDir } from '../../redux/resultEditor'
+import * as SortDir from '../../containers/SortDir'
 
 import './SortHeaderCell.scss'
 

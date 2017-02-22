@@ -4,6 +4,7 @@ import mapValues from 'lodash/mapValues'
 import { List } from 'immutable'
 import actions from '../redux/actions'
 import Scraper from '../components/Scraper'
+import sortRowsHelper from './sort-rows'
 
 const buildRows = state => {
   const { comments, replies, resultEditor } = state
@@ -30,6 +31,21 @@ const buildRows = state => {
   }
 }
 
+const sortRows = (state, rows) => {
+  const { resultEditor } = state
+  const columnSortDir = resultEditor.get('columnSortDir')
+  const sortCol = columnSortDir.keySeq().get(0)
+  const sortDir = columnSortDir.valueSeq().get(0)
+
+  if (!sortDir) {
+    return rows
+  }
+
+  console.log('col', sortCol)
+  console.log('dir', sortDir)
+  return sortRowsHelper({ sortKey: sortCol, sortDir, rows })
+}
+
 const transformToReply = c =>
   c.mapKeys(k => `reply_${k}`)
 
@@ -42,7 +58,7 @@ const mapStateToProps = (state, ownProps) => ({
   videoInfo: state.videoInfo,
   router: ownProps.router,
   route: ownProps.route,
-  rows: buildRows(state)
+  rows: sortRows(state, buildRows(state))
 })
 
 const bindActions = dispatch => action =>

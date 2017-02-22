@@ -1,9 +1,8 @@
 import types from '../action-types'
-import { Map, List, OrderedMap, fromJS } from 'immutable'
+import { Map, OrderedMap, fromJS } from 'immutable'
 import prop from 'propper'
 import { pick } from 'lodash'
 
-import applyReplyOptions from './apply-reply-options'
 import defaultColumns from '../../components/CommentTable/columns'
 
 const importDefaultColumns = () =>
@@ -50,10 +49,10 @@ export default function resultEditorReducer (state = initialState, action) {
 
     case types.resultEditor.SET_REPLIES_COLLAPSED:
       return setReplyColumns(
-        state.merge(fromJS({
+        state.merge({
           repliesCollapsed: prop(action, 'payload.repliesCollapsed'),
           operationPending: false
-        })),
+        }),
         !prop(action, 'payload.repliesCollapsed'))
 
     case types.resultEditor.SET_COLUMN_SORT_DIR_REQ:

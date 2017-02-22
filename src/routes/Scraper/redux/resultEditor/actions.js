@@ -1,6 +1,4 @@
 import * as types from './action-types'
-import applyReplyOptions from './apply-reply-options'
-import sortRows from './sort-rows'
 
 export function toggleColumn (key) {
   return (dispatch) => {
@@ -28,11 +26,8 @@ export function toggleColumnDelayed (key) {
 export function setIncludeReplies (includeReplies) {
   return (dispatch, getState) => {
     dispatch(setIncludeRepliesReq(includeReplies))
-    const { resultEditor, comments } = getState()
-
     setTimeout(() => {
-      const rows = applyReplyOptions({ resultEditor, comments: comments.toList() }, { includeReplies })
-      dispatch(setIncludeRepliesDelayed(includeReplies, rows))
+      dispatch(setIncludeRepliesDelayed(includeReplies))
     }, 50)
   }
 }
@@ -44,17 +39,16 @@ export function setIncludeRepliesReq (includeReplies) {
   }
 }
 
-export function setIncludeRepliesDelayed (includeReplies, rows) {
+export function setIncludeRepliesDelayed (includeReplies) {
   return {
     type: types.SET_INCLUDE_REPLIES,
-    payload: { includeReplies, rows }
+    payload: { includeReplies }
   }
 }
 
 export function setRepliesCollapsed (repliesCollapsed) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(setRepliesCollapsedReq(repliesCollapsed))
-
     setTimeout(() => {
       dispatch(setRepliesCollapsedDelayed(repliesCollapsed))
     }, 50)
@@ -75,42 +69,12 @@ export function setRepliesCollapsedDelayed (repliesCollapsed) {
   }
 }
 
-function populateRows (rows, comments, replies) {
-  return rows
-    .map(r =>
-      r.get('commentId')
-        ? comments.get(r.get('commentId'))
-        : r.get('replyId')
-          ? replies.get(r.get('replyId'))
-          : null)
-    .filter(Boolean)
-}
-
 export function setColumnSortDir (key, sortDir) {
   return (dispatch, getState) => {
     dispatch(setColumnSortDirReq(key, sortDir))
 
     setTimeout(() => {
-      const { resultEditor, comments, replies } = getState()
-      const originalRows = applyReplyOptions(resultEditor.get('originalRows'), resultEditor)
-      const originalComments = populateRows( )
-      const rows = applyReplyOptions({ resultEditor })
-      const repliesCollapsed = resultEditor.get('repliesCollapsed')
-
-      if (!sortDir) {
-        return dispatch(setColumnSortDirDelayed(key, sortDir, rows))
-      }
-
-      const sortedRows = sortRows({
-        rows: originalRows,
-        sortKey: key,
-        comments,
-        replies,
-        repliesCollapsed,
-        sortDir
-      })
-
-      dispatch(setColumnSortDirDelayed(key, sortDir, rows: sortedRows))
+      dispatch(setColumnSortDirDelayed(key, sortDir))
     }, 50)
   }
 }
@@ -122,9 +86,9 @@ export function setColumnSortDirReq (key, sortDir) {
   }
 }
 
-export function setColumnSortDirDelayed (key, sortDir, rows) {
+export function setColumnSortDirDelayed (key, sortDir) {
   return {
     type: types.SET_COLUMN_SORT_DIR,
-    payload: { key, sortDir, rows }
+    payload: { key, sortDir }
   }
 }
