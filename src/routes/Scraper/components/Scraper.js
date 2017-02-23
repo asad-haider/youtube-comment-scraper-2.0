@@ -71,7 +71,7 @@ class Scraper extends Component {
     const loading = Boolean(videoInfo)
     const progress = {
       totalCommentCount: videoInfo ? videoInfo.get('commentCount') : 0,
-      commentsScraped: comments.size,
+      commentsScraped: comments.get('byId').size,
       complete: scraper.get('complete')
     }
 
