@@ -3,6 +3,8 @@ const project = require('./project.config')
 const webpackConfig = require('./webpack.config')
 const debug = require('debug')('app:config:karma')
 
+process.env.PHANTOMJS_BIN = './node_modules/.bin/phantomjs'
+
 debug('Creating configuration.')
 const karmaConfig = {
   basePath : '../', // project root in relation to bin/karma.js
