@@ -40,12 +40,12 @@ class SortHeaderCell extends Component {
 
   getNextSortDir (currentSortDir) {
     switch (currentSortDir) {
-      case SortDir.DESC:
-        return SortDir.ASC
       case SortDir.ASC:
+        return SortDir.DESC
+      case SortDir.DESC:
         return null
       default:
-        return SortDir.DESC
+        return SortDir.ASC
     }
   }
 
