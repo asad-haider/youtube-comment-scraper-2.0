@@ -14,7 +14,7 @@ const compare = ({ comparator, sortKey, sortDir }) => (a, b) => {
   }
 
   const res = comparator(aVal, bVal)
-  return sortDir === SortDir.ASC ? (-1 * res) : res
+  return sortDir === SortDir.DESC ? (-1 * res) : res
 }
 
 const stringComparator = (a, b) =>
@@ -41,15 +41,15 @@ const timeComparator = (a, b) => {
     return 1
   }
 
-  return m1.isAfter(m2)
+  return m1.isBefore(m2)
     ? 1
-    : m2.isAfter(m1)
+    : m2.isBefore(m1)
     ? -1
     : 0
 }
 
 const timestampComparator = (a, b) => {
-  return defaultComparator(a, b) * -1
+  return defaultComparator(a, b)
 }
 
 const boolComparator = (a, b) => {
